@@ -1,5 +1,7 @@
 # Markdown Samples
 
+This README provides a quick reference for common Markdown syntax.
+
 ## 1. Headings
 
 # Heading 1
