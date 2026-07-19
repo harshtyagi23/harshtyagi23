@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.example.strategy.StrategyPatternTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-07-19T09:33:54.174Z" hostname="Harshs-MacBook-Air.local" time="0.078">
+  <properties/>
+  <testcase name="executesMarketOrderWithDefaultStrategy()" classname="com.example.strategy.StrategyPatternTest" time="0.042"/>
+  <testcase name="createsLambdaBasedStrategy()" classname="com.example.strategy.StrategyPatternTest" time="0.004"/>
+  <testcase name="resolvesStrategyFromEnumAndOptional()" classname="com.example.strategy.StrategyPatternTest" time="0.003"/>
+  <testcase name="executesLimitOrderWithCustomStrategy()" classname="com.example.strategy.StrategyPatternTest" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
