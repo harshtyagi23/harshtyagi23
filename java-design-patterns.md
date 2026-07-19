@@ -63,6 +63,9 @@ For each pattern, I will follow this sequence:
 - Mockito only when needed
 - Google Java Style Guide
 - Domain-driven examples using finance objects
+- Use Lambda in every example unless not possible
+- showcase use of Optional in all examples
+- Use latest new features from Java 25 wherever possible, especially switch expressions, sealed types, records, and pattern matching.
 
 ### Suggested implementation order
 1. Strategy
@@ -70,6 +73,8 @@ For each pattern, I will follow this sequence:
 3. Decorator
 4. Factory Method
 5. Builder
+
+> From the Factory Method pattern onward, each example should intentionally showcase Java 25 features in addition to the pattern itself.
 6. State
 7. Adapter
 8. Proxy
