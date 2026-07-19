@@ -3,60 +3,35 @@
 ## 1. Pattern inventory
 
 ### Behavioral patterns
-- Strategy
-- Observer
-- Command
-- State
-- Chain of Responsibility
-- Interpreter
-- Iterator
-- Mediator
-- Memento
-- Visitor
-- Template Method
+- [Strategy](java-deisgn-patterns/strategy) - [README.md](java-deisgn-patterns/strategy/README.md)
+- [Observer](java-deisgn-patterns/observer) - [README.md](java-deisgn-patterns/observer/README.md)
+- [Command](java-deisgn-patterns/command) - [README.md](java-deisgn-patterns/command/README.md)
+- [State](java-deisgn-patterns/state) - [README.md](java-deisgn-patterns/state/README.md)
+- [Chain of Responsibility](java-deisgn-patterns/chain-of-responsibility) - [README.md](java-deisgn-patterns/chain-of-responsibility/README.md)
+- [Interpreter](java-deisgn-patterns/interpreter) - [README.md](java-deisgn-patterns/interpreter/README.md)
+- [Iterator](java-deisgn-patterns/iterator) - [README.md](java-deisgn-patterns/iterator/README.md)
+- [Mediator](java-deisgn-patterns/mediator) - [README.md](java-deisgn-patterns/mediator/README.md)
+- [Memento](java-deisgn-patterns/memento) - [README.md](java-deisgn-patterns/memento/README.md)
+- [Visitor](java-deisgn-patterns/visitor) - [README.md](java-deisgn-patterns/visitor/README.md)
+- [Template Method](java-deisgn-patterns/template-method) - [README.md](java-deisgn-patterns/template-method/README.md)
 
 ### Structural patterns
-- Adapter
-- Bridge
-- Composite
-- Decorator
-- Facade
-- Flyweight
-- Proxy
+- [Adapter](java-deisgn-patterns/adapter) - [README.md](java-deisgn-patterns/adapter/README.md)
+- [Bridge](java-deisgn-patterns/bridge) - [README.md](java-deisgn-patterns/bridge/README.md)
+- [Composite](java-deisgn-patterns/composite) - [README.md](java-deisgn-patterns/composite/README.md)
+- [Decorator](java-deisgn-patterns/decorator) - [README.md](java-deisgn-patterns/decorator/README.md)
+- [Facade](java-deisgn-patterns/facade) - [README.md](java-deisgn-patterns/facade/README.md)
+- [Flyweight](java-deisgn-patterns/flyweight) - [README.md](java-deisgn-patterns/flyweight/README.md)
+- [Proxy](java-deisgn-patterns/proxy) - [README.md](java-deisgn-patterns/proxy/README.md)
 
 ### Creational patterns
-- Singleton
-- Factory Method
-- Abstract Factory
-- Builder
-- Prototype
+- [Singleton](java-deisgn-patterns/singleton) - [README.md](java-deisgn-patterns/singleton/README.md)
+- [Factory Method](java-deisgn-patterns/factory-method) - [README.md](java-deisgn-patterns/factory-method/README.md)
+- [Abstract Factory](java-deisgn-patterns/abstract-factory) - [README.md](java-deisgn-patterns/abstract-factory/README.md)
+- [Builder](java-deisgn-patterns/builder) - [README.md](java-deisgn-patterns/builder/README.md)
+- [Prototype](java-deisgn-patterns/prototype) - [README.md](java-deisgn-patterns/prototype/README.md)
 
-## 2. Overall implementation plan for review
-
-### Goal
-Build a Gradle-based Java 25 learning project that demonstrates each design pattern using finance-domain examples such as Fund, ShareClass, FinancialProduct, Trade, Account, and Balance.
-
-### Working approach
-For each pattern, I will follow this sequence:
-1. Create a reviewable plan for the specific pattern.
-2. Show the plan to you for feedback.
-3. Create a dedicated branch named `feature/<pattern-name>`.
-4. Implement a working Java example with Gradle.
-5. Add unit tests with JUnit 5.
-6. Add a markdown explanation file with:
-   - a short summary of the pattern
-   - a Mermaid class diagram
-   - bullet points explaining why the pattern fits
-   - notes on how SOLID principles are applied
-7. Commit and push the branch.
-8. Move to the next pattern.
-
-### Repository structure proposal
-- Keep one Gradle project for the learning repository.
-- Each pattern example will be implemented in its own branch and folder structure.
-- Each example should stay self-contained and easy to review.
-
-### Standards to follow
+### Standards 
 - Java 25
 - Gradle
 - JUnit 5
@@ -66,39 +41,3 @@ For each pattern, I will follow this sequence:
 - Use Lambda in every example unless not possible
 - showcase use of Optional in all examples
 - Use latest new features from Java 25 wherever possible, especially switch expressions, sealed types, records, and pattern matching.
-
-### Suggested implementation order
-1. Strategy
-2. Observer
-3. Decorator
-4. Factory Method
-5. Builder
-
-> From the Factory Method pattern onward, each example should intentionally showcase Java 25 features in addition to the pattern itself.
-6. State
-7. Adapter
-8. Proxy
-9. Command
-10. Template Method
-11. Singleton
-12. Abstract Factory
-13. Composite
-14. Facade
-15. Bridge
-16. Flyweight
-17. Interpreter
-18. Iterator
-19. Mediator
-20. Memento
-21. Visitor
-22. Prototype
-23. Chain of Responsibility
-
-### First step proposal
-Start with Strategy as the first example because it is simple, practical, and easy to explain with a financial trading scenario.
-
-## 3. Review notes
-Please review this inventory and sequence. If you want, I can next:
-- refine the order,
-- choose a different first pattern,
-- or start implementing the first example immediately.
