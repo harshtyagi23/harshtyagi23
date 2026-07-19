@@ -1,4 +1,9 @@
-# Gradle
+.DS_Store
+**/.DS_Store
+**/node_modules/
+**/dist/
+**/__pycache__/
+*.pyc# Gradle
 .gradle/
 **/.gradle/
 **/build/
