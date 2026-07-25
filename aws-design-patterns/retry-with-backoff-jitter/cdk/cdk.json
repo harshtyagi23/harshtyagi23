@@ -1,0 +1,3 @@
+{
+  "app": "npx ts-node --prefer-ts-exts bin/retry-with-backoff-jitter-app.ts"
+}

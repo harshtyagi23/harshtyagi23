@@ -1,0 +1,3 @@
+{
+  "app": "npx ts-node --prefer-ts-exts bin/private-networking-data-tier-app.ts"
+}
