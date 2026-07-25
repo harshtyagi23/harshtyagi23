@@ -44,3 +44,20 @@ classDiagram
 1. Create an `OrderContext` with the raw status and quantity.
 2. Choose a state implementation such as `NewOrderState` or `ApprovedOrderState`.
 3. Pass the context through `OrderProcessor` to get a state-specific response.
+
+## Problem it solves
+
+This pattern addresses a recurring design issue by separating responsibilities and reducing tight coupling in State Pattern scenarios.
+
+## When to use
+
+- Use this pattern when you need cleaner separation of concerns in State Pattern code.
+- Use it when you expect variation in behavior and want to avoid complex conditionals.
+- Use it when maintainability and extension are more important than one-off shortcuts.
+
+## Example from Java/JDK
+
+State behavior appears where object behavior depends on internal lifecycle state.
+
+- JDK classes: java.lang.Thread.State, javax.net.ssl.SSLEngineResult.HandshakeStatus
+- Reference: https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Thread.State.html

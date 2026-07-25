@@ -39,3 +39,20 @@ classDiagram
 - Records for compact immutable portfolio nodes
 - `Optional` for optional strategy metadata
 - Stream aggregation inside the valuation visitor
+
+## Problem it solves
+
+This pattern addresses a recurring design issue by separating responsibilities and reducing tight coupling in Visitor Pattern scenarios.
+
+## When to use
+
+- Use this pattern when you need cleaner separation of concerns in Visitor Pattern code.
+- Use it when you expect variation in behavior and want to avoid complex conditionals.
+- Use it when maintainability and extension are more important than one-off shortcuts.
+
+## Example from Java/JDK
+
+Visitor-style dispatch appears where logic depends on element type without changing element classes.
+
+- JDK classes: java.nio.file.FileVisitor, javax.lang.model.element.ElementVisitor
+- Reference: https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/nio/file/FileVisitor.html

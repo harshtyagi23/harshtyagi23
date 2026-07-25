@@ -37,3 +37,20 @@ classDiagram
 - `Optional` for benchmark metadata
 - Copy constructors for deep-copy behavior
 - Concurrent registry for safe template lookup
+
+## Problem it solves
+
+This pattern addresses a recurring design issue by separating responsibilities and reducing tight coupling in Prototype Pattern scenarios.
+
+## When to use
+
+- Use this pattern when you need cleaner separation of concerns in Prototype Pattern code.
+- Use it when you expect variation in behavior and want to avoid complex conditionals.
+- Use it when maintainability and extension are more important than one-off shortcuts.
+
+## Example from Java/JDK
+
+Prototype appears where cloning creates new objects from existing instances.
+
+- JDK classes: java.lang.Cloneable, java.util.Date#clone
+- Reference: https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Cloneable.html
