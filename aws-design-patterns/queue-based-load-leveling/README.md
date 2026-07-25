@@ -120,6 +120,4 @@ consumer.addEventSource(new SqsEventSource(queue));
 
 1. Run the Python tests in `example/`.
 2. Run `npm test -- --runInBand` in `cdk/`.
-3. Use `cdk synth` to inspect the generated infrastructure before deployment.# Queue-Based Load Leveling
-
-TODO: Describe the AWS Queue-Based Load Leveling pattern, example flow, and tradeoffs.
+3. Use `cdk synth` to inspect the generated infrastructure before deployment.
