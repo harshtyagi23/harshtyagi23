@@ -54,3 +54,10 @@ This pattern addresses a recurring design issue by separating responsibilities a
 - Use this pattern when you need cleaner separation of concerns in Facade Pattern code.
 - Use it when you expect variation in behavior and want to avoid complex conditionals.
 - Use it when maintainability and extension are more important than one-off shortcuts.
+
+## Example from Java/JDK
+
+Facade appears where a simple entry point hides subsystem complexity.
+
+- JDK classes: java.nio.file.Files
+- Reference: https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/nio/file/Files.html

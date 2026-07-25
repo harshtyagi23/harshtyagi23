@@ -49,3 +49,10 @@ This pattern addresses a recurring design issue by separating responsibilities a
 - Use this pattern when you need cleaner separation of concerns in Flyweight Pattern code.
 - Use it when you expect variation in behavior and want to avoid complex conditionals.
 - Use it when maintainability and extension are more important than one-off shortcuts.
+
+## Example from Java/JDK
+
+Flyweight is used for object reuse to reduce allocation and memory pressure.
+
+- JDK classes: java.lang.Integer#valueOf, java.lang.Boolean#valueOf
+- Reference: https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Integer.html#valueOf(int)

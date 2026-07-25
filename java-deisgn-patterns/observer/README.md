@@ -47,3 +47,10 @@ This pattern addresses a recurring design issue by separating responsibilities a
 - Use this pattern when you need cleaner separation of concerns in Observer Pattern code.
 - Use it when you expect variation in behavior and want to avoid complex conditionals.
 - Use it when maintainability and extension are more important than one-off shortcuts.
+
+## Example from Java/JDK
+
+Observer-like publish/subscribe is common in listener and event APIs.
+
+- JDK classes: java.util.concurrent.Flow, java.beans.PropertyChangeListener
+- Reference: https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/concurrent/Flow.html

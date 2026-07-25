@@ -49,3 +49,10 @@ This pattern addresses a recurring design issue by separating responsibilities a
 - Use this pattern when you need cleaner separation of concerns in Visitor Pattern code.
 - Use it when you expect variation in behavior and want to avoid complex conditionals.
 - Use it when maintainability and extension are more important than one-off shortcuts.
+
+## Example from Java/JDK
+
+Visitor-style dispatch appears where logic depends on element type without changing element classes.
+
+- JDK classes: java.nio.file.FileVisitor, javax.lang.model.element.ElementVisitor
+- Reference: https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/nio/file/FileVisitor.html
