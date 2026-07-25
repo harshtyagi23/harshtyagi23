@@ -36,3 +36,13 @@ classDiagram
 - `Optional` for primary holding lookup
 - `Deque` for undo-style history
 - Copy-on-save and copy-on-restore for safe state management
+
+## Problem it solves
+
+This pattern addresses a recurring design issue by separating responsibilities and reducing tight coupling in Memento Pattern scenarios.
+
+## When to use
+
+- Use this pattern when you need cleaner separation of concerns in Memento Pattern code.
+- Use it when you expect variation in behavior and want to avoid complex conditionals.
+- Use it when maintainability and extension are more important than one-off shortcuts.

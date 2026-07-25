@@ -48,3 +48,13 @@ classDiagram
 - Switch expressions for tier-based risk limits
 - `Optional` for trader notes
 - Streams and lambdas in the compliance handler and demo app
+
+## Problem it solves
+
+This pattern addresses a recurring design issue by separating responsibilities and reducing tight coupling in Chain of Responsibility scenarios.
+
+## When to use
+
+- Use this pattern when you need cleaner separation of concerns in Chain of Responsibility code.
+- Use it when you expect variation in behavior and want to avoid complex conditionals.
+- Use it when maintainability and extension are more important than one-off shortcuts.

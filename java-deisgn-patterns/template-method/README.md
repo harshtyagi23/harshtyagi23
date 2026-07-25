@@ -38,3 +38,13 @@ classDiagram
 1. The template defines the standard review order.
 2. Concrete implementations override the specific risk steps.
 3. The same review pipeline is reused for different portfolio strategies.
+
+## Problem it solves
+
+This pattern addresses a recurring design issue by separating responsibilities and reducing tight coupling in Template Method Pattern scenarios.
+
+## When to use
+
+- Use this pattern when you need cleaner separation of concerns in Template Method Pattern code.
+- Use it when you expect variation in behavior and want to avoid complex conditionals.
+- Use it when maintainability and extension are more important than one-off shortcuts.

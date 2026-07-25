@@ -45,3 +45,13 @@ classDiagram
 - Open/closed principle: new report features can be added through new decorators.
 - Single responsibility: each decorator handles one responsibility.
 - Dependency inversion: the decorators depend on the interface rather than a concrete implementation.
+
+## Problem it solves
+
+This pattern addresses a recurring design issue by separating responsibilities and reducing tight coupling in Decorator Pattern scenarios.
+
+## When to use
+
+- Use this pattern when you need cleaner separation of concerns in Decorator Pattern code.
+- Use it when you expect variation in behavior and want to avoid complex conditionals.
+- Use it when maintainability and extension are more important than one-off shortcuts.

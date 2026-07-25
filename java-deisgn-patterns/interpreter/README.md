@@ -40,3 +40,13 @@ classDiagram
 - `Map`-based context input
 - `switch` expressions inside comparison evaluation
 - `Optional` is intentionally avoided here because the grammar is explicit and string-driven
+
+## Problem it solves
+
+This pattern addresses a recurring design issue by separating responsibilities and reducing tight coupling in Interpreter Pattern scenarios.
+
+## When to use
+
+- Use this pattern when you need cleaner separation of concerns in Interpreter Pattern code.
+- Use it when you expect variation in behavior and want to avoid complex conditionals.
+- Use it when maintainability and extension are more important than one-off shortcuts.

@@ -43,3 +43,13 @@ classDiagram
 - Records for immutable portfolio data
 - Switch expressions for summary classification
 - Optional for null-safe description flow
+
+## Problem it solves
+
+This pattern addresses a recurring design issue by separating responsibilities and reducing tight coupling in Builder Pattern scenarios.
+
+## When to use
+
+- Use this pattern when you need cleaner separation of concerns in Builder Pattern code.
+- Use it when you expect variation in behavior and want to avoid complex conditionals.
+- Use it when maintainability and extension are more important than one-off shortcuts.

@@ -39,3 +39,13 @@ classDiagram
 - Records for compact immutable portfolio nodes
 - `Optional` for optional strategy metadata
 - Stream aggregation inside the valuation visitor
+
+## Problem it solves
+
+This pattern addresses a recurring design issue by separating responsibilities and reducing tight coupling in Visitor Pattern scenarios.
+
+## When to use
+
+- Use this pattern when you need cleaner separation of concerns in Visitor Pattern code.
+- Use it when you expect variation in behavior and want to avoid complex conditionals.
+- Use it when maintainability and extension are more important than one-off shortcuts.

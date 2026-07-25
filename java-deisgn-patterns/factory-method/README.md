@@ -47,3 +47,13 @@ classDiagram
 - Sealed interfaces for controlled subtype hierarchies
 - Records for immutable product data objects
 - Switch expressions with Optional-based factory resolution
+
+## Problem it solves
+
+This pattern addresses a recurring design issue by separating responsibilities and reducing tight coupling in Factory Method Pattern scenarios.
+
+## When to use
+
+- Use this pattern when you need cleaner separation of concerns in Factory Method Pattern code.
+- Use it when you expect variation in behavior and want to avoid complex conditionals.
+- Use it when maintainability and extension are more important than one-off shortcuts.

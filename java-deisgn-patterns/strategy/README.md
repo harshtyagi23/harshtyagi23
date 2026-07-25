@@ -49,3 +49,13 @@ classDiagram
 - Single Responsibility: the trading system orchestrates, while strategies encapsulate execution logic.
 - Open/Closed: new strategies can be added without modifying existing code.
 - Dependency Inversion: the trading system depends on the abstraction `OrderStrategy`.
+
+## Problem it solves
+
+This pattern addresses a recurring design issue by separating responsibilities and reducing tight coupling in Strategy Pattern scenarios.
+
+## When to use
+
+- Use this pattern when you need cleaner separation of concerns in Strategy Pattern code.
+- Use it when you expect variation in behavior and want to avoid complex conditionals.
+- Use it when maintainability and extension are more important than one-off shortcuts.

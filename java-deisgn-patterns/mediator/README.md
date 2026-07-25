@@ -42,3 +42,13 @@ classDiagram
 - `Optional` for route derivation inside the mediator
 - Interface-based colleagues to keep requesters decoupled
 - Small coordination object that acts as the single integration point
+
+## Problem it solves
+
+This pattern addresses a recurring design issue by separating responsibilities and reducing tight coupling in Mediator Pattern scenarios.
+
+## When to use
+
+- Use this pattern when you need cleaner separation of concerns in Mediator Pattern code.
+- Use it when you expect variation in behavior and want to avoid complex conditionals.
+- Use it when maintainability and extension are more important than one-off shortcuts.

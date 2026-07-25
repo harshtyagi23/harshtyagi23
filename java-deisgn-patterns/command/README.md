@@ -43,3 +43,13 @@ classDiagram
 1. A command object captures a trading action.
 2. The executor invokes the command without knowing its concrete implementation.
 3. The result is returned as a simple string for the caller.
+
+## Problem it solves
+
+This pattern addresses a recurring design issue by separating responsibilities and reducing tight coupling in Command Pattern scenarios.
+
+## When to use
+
+- Use this pattern when you need cleaner separation of concerns in Command Pattern code.
+- Use it when you expect variation in behavior and want to avoid complex conditionals.
+- Use it when maintainability and extension are more important than one-off shortcuts.
