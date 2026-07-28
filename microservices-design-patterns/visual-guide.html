@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="88">☁️</text></svg>'>
-<title>AWS Design Patterns — Visual Field Guide</title>
+<link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="88">🕸️</text></svg>'>
+<title>Microservices Design Patterns — Visual Field Guide</title>
 <style>
   :root{
     --paper:#eef1f4; --panel:#ffffff; --panel-2:#f6f8fa;
     --ink:#16202b; --ink-soft:#3d4c5a; --muted:#68798a; --faint:#93a3b1;
     --line:#d9e0e7; --line-strong:#c4ced8;
-    --accent:#e07b12; --accent-soft:#f6e2c9;
+    --accent:#0f9d76; --accent-soft:#d7f0e6;
     --diagram-bg:#f4f7fa; --diagram-grid:#e2e9f0;
     --shadow:0 1px 2px rgba(20,35,50,.04),0 8px 24px -12px rgba(20,35,50,.18);
     --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
@@ -22,7 +22,7 @@
       --paper:#0d131a; --panel:#151d27; --panel-2:#111922;
       --ink:#e8eef4; --ink-soft:#c2ceda; --muted:#8b9cab; --faint:#63768a;
       --line:#243140; --line-strong:#31424f;
-      --accent:#f59524; --accent-soft:#3a2b16;
+      --accent:#34c99b; --accent-soft:#0f3329;
       --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -14px rgba(0,0,0,.6);
     }
   }
@@ -30,7 +30,7 @@
     --paper:#eef1f4; --panel:#ffffff; --panel-2:#f6f8fa;
     --ink:#16202b; --ink-soft:#3d4c5a; --muted:#68798a; --faint:#93a3b1;
     --line:#d9e0e7; --line-strong:#c4ced8;
-    --accent:#e07b12; --accent-soft:#f6e2c9;
+    --accent:#0f9d76; --accent-soft:#d7f0e6;
     --diagram-bg:#f4f7fa; --diagram-grid:#e2e9f0;
     --shadow:0 1px 2px rgba(20,35,50,.04),0 8px 24px -12px rgba(20,35,50,.18);
   }
@@ -38,24 +38,32 @@
     --paper:#0d131a; --panel:#151d27; --panel-2:#111922;
     --ink:#e8eef4; --ink-soft:#c2ceda; --muted:#8b9cab; --faint:#63768a;
     --line:#243140; --line-strong:#31424f;
-    --accent:#f59524; --accent-soft:#3a2b16;
+    --accent:#34c99b; --accent-soft:#0f3329;
     --diagram-bg:#f4f7fa; --diagram-grid:#e2e9f0;
     --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -14px rgba(0,0,0,.6);
   }
 
   /* group (tier / family) accent tokens */
-  .g-easy{--gc:#1f8f74;--gcb:#e3f2ec}
-@media(prefers-color-scheme:dark){.g-easy{--gc:#4cc4a3;--gcb:#12352c}}
-:root[data-theme=light] .g-easy{--gc:#1f8f74;--gcb:#e3f2ec}
-:root[data-theme=dark] .g-easy{--gc:#4cc4a3;--gcb:#12352c}
-.g-medium{--gc:#b9832a;--gcb:#f6ecd6}
-@media(prefers-color-scheme:dark){.g-medium{--gc:#e0b256;--gcb:#3a2f14}}
-:root[data-theme=light] .g-medium{--gc:#b9832a;--gcb:#f6ecd6}
-:root[data-theme=dark] .g-medium{--gc:#e0b256;--gcb:#3a2f14}
-.g-complex{--gc:#bd5a5a;--gcb:#f6e2e0}
-@media(prefers-color-scheme:dark){.g-complex{--gc:#e08585;--gcb:#3c211f}}
-:root[data-theme=light] .g-complex{--gc:#bd5a5a;--gcb:#f6e2e0}
-:root[data-theme=dark] .g-complex{--gc:#e08585;--gcb:#3c211f}
+  .g-decomposition{--gc:#2f6fb0;--gcb:#e2ecf6}
+@media(prefers-color-scheme:dark){.g-decomposition{--gc:#6ea6e0;--gcb:#16283a}}
+:root[data-theme=light] .g-decomposition{--gc:#2f6fb0;--gcb:#e2ecf6}
+:root[data-theme=dark] .g-decomposition{--gc:#6ea6e0;--gcb:#16283a}
+.g-data-management{--gc:#1f8f74;--gcb:#e3f2ec}
+@media(prefers-color-scheme:dark){.g-data-management{--gc:#4cc4a3;--gcb:#12352c}}
+:root[data-theme=light] .g-data-management{--gc:#1f8f74;--gcb:#e3f2ec}
+:root[data-theme=dark] .g-data-management{--gc:#4cc4a3;--gcb:#12352c}
+.g-integration{--gc:#b9832a;--gcb:#f6ecd6}
+@media(prefers-color-scheme:dark){.g-integration{--gc:#e0b256;--gcb:#3a2f14}}
+:root[data-theme=light] .g-integration{--gc:#b9832a;--gcb:#f6ecd6}
+:root[data-theme=dark] .g-integration{--gc:#e0b256;--gcb:#3a2f14}
+.g-reliability{--gc:#bd5a5a;--gcb:#f6e2e0}
+@media(prefers-color-scheme:dark){.g-reliability{--gc:#e08585;--gcb:#3c211f}}
+:root[data-theme=light] .g-reliability{--gc:#bd5a5a;--gcb:#f6e2e0}
+:root[data-theme=dark] .g-reliability{--gc:#e08585;--gcb:#3c211f}
+.g-observability-deployment{--gc:#9160c0;--gcb:#efe6f7}
+@media(prefers-color-scheme:dark){.g-observability-deployment{--gc:#b891df;--gcb:#2b1f3a}}
+:root[data-theme=light] .g-observability-deployment{--gc:#9160c0;--gcb:#efe6f7}
+:root[data-theme=dark] .g-observability-deployment{--gc:#b891df;--gcb:#2b1f3a}
 
   *{box-sizing:border-box}
   body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased;}
@@ -154,27 +162,28 @@
     <div class="brand">
       <div class="logo" aria-hidden="true"></div>
       <div>
-        <h1>AWS Design Patterns</h1>
-        <div class="sub">Visual Field Guide</div>
+        <h1>Microservices Patterns</h1>
+        <div class="sub">Distributed Systems</div>
       </div>
     </div>
     <div class="top-spacer"></div>
-    <div class="count-badge"><b id="shown">33</b> / 33 patterns</div>
+    <div class="count-badge"><b id="shown">30</b> / 30 patterns</div>
     <button class="theme-btn" id="themeBtn" type="button">◐ Theme</button>
   </div>
 </header>
 
 <section class="hero">
   <div class="wrap hero-inner">
-    <div class="eyebrow">Cloud &amp; Integration Architecture</div>
-    <h2>33 patterns every architect is expected to <em>recognize on sight</em>.</h2>
-    <p>A visual catalog of AWS-flavored design patterns — each paired with the real services that implement it and the architecture diagram that makes it click. Filter by difficulty, search by service, and read the wiring at a glance.</p>
+    <div class="eyebrow">Distributed Systems &amp; Service Design</div>
+    <h2>30 patterns for systems that <em>don't fall over</em>.</h2>
+    <p>Decomposition, data, integration, reliability, and observability patterns for microservices — each with a plain-English explanation, where you'll reach for it, and an architecture diagram of the wiring.</p>
     <div class="stats">
-<div class="stat "><div class="n">33</div><div class="l">Patterns</div></div>
-<div class="stat g-easy"><div class="n">12</div><div class="l">Easy</div></div>
-<div class="stat g-medium"><div class="n">8</div><div class="l">Medium</div></div>
-<div class="stat g-complex"><div class="n">13</div><div class="l">Complex</div></div>
-<div class="stat "><div class="n">3</div><div class="l">Families</div></div>
+<div class="stat "><div class="n">30</div><div class="l">Patterns</div></div>
+<div class="stat g-decomposition"><div class="n">4</div><div class="l">Decompose</div></div>
+<div class="stat g-data-management"><div class="n">6</div><div class="l">Data</div></div>
+<div class="stat g-integration"><div class="n">8</div><div class="l">Integration</div></div>
+<div class="stat g-reliability"><div class="n">6</div><div class="l">Reliability</div></div>
+<div class="stat g-observability-deployment"><div class="n">6</div><div class="l">Observe</div></div>
     </div>
   </div>
 </section>
@@ -186,766 +195,617 @@
       <input id="q" type="search" placeholder="Search patterns, services, use cases…" autocomplete="off">
     </label>
     <div class="chips" id="groupChips">
-<span class="chip on" data-k="all">All tiers</span>
-<span class="chip g-easy" data-k="Easy"><span class="dot"></span>Easy</span>
-<span class="chip g-medium" data-k="Medium"><span class="dot"></span>Medium</span>
-<span class="chip g-complex" data-k="Complex"><span class="dot"></span>Complex</span>
+<span class="chip on" data-k="all">All families</span>
+<span class="chip g-decomposition" data-k="Decomposition"><span class="dot"></span>Decomposition</span>
+<span class="chip g-data-management" data-k="Data Management"><span class="dot"></span>Data Management</span>
+<span class="chip g-integration" data-k="Integration"><span class="dot"></span>Integration</span>
+<span class="chip g-reliability" data-k="Reliability"><span class="dot"></span>Reliability</span>
+<span class="chip g-observability-deployment" data-k="Observability &amp; Deployment"><span class="dot"></span>Observability &amp; Deployment</span>
     </div>
   </div>
 </div>
 
 <main class="wrap">
   <div class="grid" id="grid">
-<article class="card g-easy" data-group="Easy" data-search="api gateway lambda serverless api api gateway + lambda is a serverless request/response pattern. api gateway handles http concerns and routes requests to lambda, which runs business logic. easy api &amp; edge build lightweight request/response apis api gateway lambda dynamodb">
+<article class="card g-integration" data-group="Integration" data-search="api gateway pattern use a single entry point to route, secure, and shape requests to services. integration  single entry point that routes/aggregates ">
 <div class="card-head">
   <div class="card-meta">
     <span class="num">01</span>
-    <span class="tier">Easy</span>
-    <span class="family">API &amp; Edge</span>
+    <span class="tier">Integration</span>
+    
   </div>
-  <h3>API Gateway Lambda Serverless API</h3>
-  <p class="desc">API Gateway + Lambda is a serverless request/response pattern. API Gateway handles HTTP concerns and routes requests to Lambda, which runs business logic.</p>
+  <h3>API Gateway pattern</h3>
+  <p class="desc">Use a single entry point to route, secure, and shape requests to services.</p>
 </div>
-<div class="services"><span class="svc">API Gateway</span><span class="svc">Lambda</span><span class="svc">DynamoDB</span></div>
-<div class="use-row"><span class="k">Use it to</span><span class="v">Build lightweight request/response APIs</span></div>
-<div class="diagram"><pre class="mmd-src">flowchart LR
-	Client[HTTP Client]
-	Api[API Gateway]
-	Fn[Lambda Handler]
 
-	Client --&gt; Api
-	Api --&gt; Fn
-	Fn --&gt; Api
-	Api --&gt; Client</pre></div>
+<div class="use-row"><span class="k">Where you&#x27;ll use it</span><span class="v">Single entry point that routes/aggregates</span></div>
+<div class="diagram"><pre class="mmd-src">flowchart LR
+    Client[Client or Producer] --&gt; Entry[Spring Boot API / Event Entry]
+    Entry --&gt; Logic[API Gateway pattern Logic]
+    Logic --&gt; ServiceA[Service A]
+    Logic --&gt; ServiceB[Service B]
+    ServiceA --&gt; Obs[Logs, Metrics, Traces]
+    ServiceB --&gt; Obs</pre></div>
 </article>
-<article class="card g-easy" data-group="Easy" data-search="cache aside cache-aside improves read performance by checking a cache first and only querying the primary database on cache misses. the application is responsible for populating and updating the cache. easy data &amp; storage read through a cache before the database elasticache dax lambda">
+<article class="card g-integration" data-group="Integration" data-search="asynchronous messaging decouple services with non-blocking message exchange over queues or topics. integration  communicate via queues/topics ">
 <div class="card-head">
   <div class="card-meta">
     <span class="num">02</span>
-    <span class="tier">Easy</span>
-    <span class="family">Data &amp; Storage</span>
+    <span class="tier">Integration</span>
+    
   </div>
-  <h3>Cache Aside</h3>
-  <p class="desc">Cache-Aside improves read performance by checking a cache first and only querying the primary database on cache misses. The application is responsible for populating and updating the cache.</p>
+  <h3>Asynchronous Messaging</h3>
+  <p class="desc">Decouple services with non-blocking message exchange over queues or topics.</p>
 </div>
-<div class="services"><span class="svc">ElastiCache</span><span class="svc">DAX</span><span class="svc">Lambda</span></div>
-<div class="use-row"><span class="k">Use it to</span><span class="v">Read through a cache before the database</span></div>
-<div class="diagram"><pre class="mmd-src">flowchart LR
-	Client[Client]
-	App[Lambda/API Handler]
-	Cache[(Cache)]
-	Db[(Database)]
 
-	Client --&gt; App
-	App --&gt; Cache
-	Cache --&gt; App
-	App --&gt; Db
-	Db --&gt; App
-	App --&gt; Client</pre></div>
+<div class="use-row"><span class="k">Where you&#x27;ll use it</span><span class="v">Communicate via queues/topics</span></div>
+<div class="diagram"><pre class="mmd-src">flowchart LR
+    Client[Client or Producer] --&gt; Entry[Spring Boot API / Event Entry]
+    Entry --&gt; Logic[Asynchronous Messaging Logic]
+    Logic --&gt; ServiceA[Service A]
+    Logic --&gt; ServiceB[Service B]
+    ServiceA --&gt; Obs[Logs, Metrics, Traces]
+    ServiceB --&gt; Obs</pre></div>
 </article>
-<article class="card g-easy" data-group="Easy" data-search="claim check claim check stores large payloads outside the queue and sends only a lightweight reference in the message. in aws, the payload usually goes to s3 while sqs carries the s3 key. easy messaging &amp; events keep large payloads out of the queue s3 sqs">
+<article class="card g-integration" data-group="Integration" data-search="backends for frontends (bff) create client-specific backend apis for web, mobile, and partner channels. integration  a separate api layer per client type ">
 <div class="card-head">
   <div class="card-meta">
     <span class="num">03</span>
-    <span class="tier">Easy</span>
-    <span class="family">Messaging &amp; Events</span>
+    <span class="tier">Integration</span>
+    
   </div>
-  <h3>Claim Check</h3>
-  <p class="desc">Claim Check stores large payloads outside the queue and sends only a lightweight reference in the message. In AWS, the payload usually goes to S3 while SQS carries the S3 key.</p>
+  <h3>Backends for Frontends (BFF)</h3>
+  <p class="desc">Create client-specific backend APIs for web, mobile, and partner channels.</p>
 </div>
-<div class="services"><span class="svc">S3</span><span class="svc">SQS</span></div>
-<div class="use-row"><span class="k">Use it to</span><span class="v">Keep large payloads out of the queue</span></div>
-<div class="diagram"><pre class="mmd-src">flowchart LR
-	Producer[Python Producer]
-	Bucket[S3 Bucket]
-	Queue[SQS Queue]
-	Consumer[Lambda Consumer]
 
-	Producer --&gt; Bucket
-	Producer --&gt; Queue
-	Queue --&gt; Consumer
-	Consumer --&gt; Bucket</pre></div>
+<div class="use-row"><span class="k">Where you&#x27;ll use it</span><span class="v">A separate API layer per client type</span></div>
+<div class="diagram"><pre class="mmd-src">flowchart LR
+    Client[Client or Producer] --&gt; Entry[Spring Boot API / Event Entry]
+    Entry --&gt; Logic[&quot;Backends for Frontends (BFF) Logic&quot;]
+    Logic --&gt; ServiceA[Service A]
+    Logic --&gt; ServiceB[Service B]
+    ServiceA --&gt; Obs[Logs, Metrics, Traces]
+    ServiceB --&gt; Obs</pre></div>
 </article>
-<article class="card g-easy" data-group="Easy" data-search="dlq + redrive dlq + redrive is the pattern for isolating poison messages from normal traffic. a primary sqs queue handles the main workload, and a dead-letter queue captures messages that keep failing after a configured number of retries. easy messaging &amp; events capture failed messages and retry them later sqs dead-letter queue">
+<article class="card g-reliability" data-group="Reliability" data-search="bulkhead isolate resources so one overloaded workflow does not degrade others. reliability  isolate resources so one failure doesn&#x27;t sink all ">
 <div class="card-head">
   <div class="card-meta">
     <span class="num">04</span>
-    <span class="tier">Easy</span>
-    <span class="family">Messaging &amp; Events</span>
+    <span class="tier">Reliability</span>
+    
   </div>
-  <h3>DLQ + Redrive</h3>
-  <p class="desc">DLQ + Redrive is the pattern for isolating poison messages from normal traffic. A primary SQS queue handles the main workload, and a dead-letter queue captures messages that keep failing after a configured number of retries.</p>
+  <h3>Bulkhead</h3>
+  <p class="desc">Isolate resources so one overloaded workflow does not degrade others.</p>
 </div>
-<div class="services"><span class="svc">SQS</span><span class="svc">Dead-Letter Queue</span></div>
-<div class="use-row"><span class="k">Use it to</span><span class="v">Capture failed messages and retry them later</span></div>
-<div class="diagram"><pre class="mmd-src">flowchart LR
-	Producer[Python Producer]
-	Queue[SQS Main Queue]
-	Consumer[Lambda Consumer]
-	DLQ[SQS Dead-Letter Queue]
 
-	Producer --&gt; Queue
-	Queue --&gt; Consumer
-	Consumer -- repeated failure --&gt; DLQ
-	DLQ -- redrive after fix --&gt; Queue</pre></div>
+<div class="use-row"><span class="k">Where you&#x27;ll use it</span><span class="v">Isolate resources so one failure doesn&#x27;t sink all</span></div>
+<div class="diagram"><pre class="mmd-src">flowchart LR
+    Client[Client or Producer] --&gt; Entry[Spring Boot API / Event Entry]
+    Entry --&gt; Logic[Bulkhead Logic]
+    Logic --&gt; ServiceA[Service A]
+    Logic --&gt; ServiceB[Service B]
+    ServiceA --&gt; Obs[Logs, Metrics, Traces]
+    ServiceB --&gt; Obs</pre></div>
 </article>
-<article class="card g-easy" data-group="Easy" data-search="event-driven file processing event-driven file processing reacts to file uploads automatically. in aws, an object lands in s3 and triggers downstream processing without polling. easy messaging &amp; events process a file the moment it lands s3 eventbridge lambda">
+<article class="card g-reliability" data-group="Reliability" data-search="circuit breaker fail fast on unhealthy downstream dependencies to prevent cascading outages. reliability  stop calling a failing dependency ">
 <div class="card-head">
   <div class="card-meta">
     <span class="num">05</span>
-    <span class="tier">Easy</span>
-    <span class="family">Messaging &amp; Events</span>
+    <span class="tier">Reliability</span>
+    
   </div>
-  <h3>Event-Driven File Processing</h3>
-  <p class="desc">Event-Driven File Processing reacts to file uploads automatically. In AWS, an object lands in S3 and triggers downstream processing without polling.</p>
+  <h3>Circuit Breaker</h3>
+  <p class="desc">Fail fast on unhealthy downstream dependencies to prevent cascading outages.</p>
 </div>
-<div class="services"><span class="svc">S3</span><span class="svc">EventBridge</span><span class="svc">Lambda</span></div>
-<div class="use-row"><span class="k">Use it to</span><span class="v">Process a file the moment it lands</span></div>
-<div class="diagram"><pre class="mmd-src">flowchart LR
-	Producer[Uploader]
-	Bucket[S3 Bucket]
-	Consumer[Lambda Processor]
 
-	Producer --&gt; Bucket
-	Bucket --&gt; Consumer</pre></div>
+<div class="use-row"><span class="k">Where you&#x27;ll use it</span><span class="v">Stop calling a failing dependency</span></div>
+<div class="diagram"><pre class="mmd-src">flowchart LR
+    Client[Client or Producer] --&gt; Entry[Spring Boot API / Event Entry]
+    Entry --&gt; Logic[Circuit Breaker Logic]
+    Logic --&gt; ServiceA[Service A]
+    Logic --&gt; ServiceB[Service B]
+    ServiceA --&gt; Obs[Logs, Metrics, Traces]
+    ServiceB --&gt; Obs</pre></div>
 </article>
-<article class="card g-easy" data-group="Easy" data-search="fan-out fan-out is a publish-once, process-many pattern. one producer sends a single event to an sns topic, and that topic forwards the message to multiple sqs queues so each consumer can process the event independently. easy messaging &amp; events broadcast one event to many consumers sns sqs lambda">
+<article class="card g-integration" data-group="Integration" data-search="claim check store large payloads externally and pass only a lightweight reference in messages. integration  pass a reference, not the payload ">
 <div class="card-head">
   <div class="card-meta">
     <span class="num">06</span>
-    <span class="tier">Easy</span>
-    <span class="family">Messaging &amp; Events</span>
+    <span class="tier">Integration</span>
+    
   </div>
-  <h3>Fan-Out</h3>
-  <p class="desc">Fan-Out is a publish-once, process-many pattern. One producer sends a single event to an SNS topic, and that topic forwards the message to multiple SQS queues so each consumer can process the event independently.</p>
+  <h3>Claim Check</h3>
+  <p class="desc">Store large payloads externally and pass only a lightweight reference in messages.</p>
 </div>
-<div class="services"><span class="svc">SNS</span><span class="svc">SQS</span><span class="svc">Lambda</span></div>
-<div class="use-row"><span class="k">Use it to</span><span class="v">Broadcast one event to many consumers</span></div>
-<div class="diagram"><pre class="mmd-src">flowchart LR
-	Producer[Python Producer]
-	Topic[SNS Topic]
-	QueueA[SQS Queue A]
-	QueueB[SQS Queue B]
-	ConsumerA[Lambda Consumer A]
-	ConsumerB[Lambda Consumer B]
 
-	Producer --&gt; Topic
-	Topic --&gt; QueueA
-	Topic --&gt; QueueB
-	QueueA --&gt; ConsumerA
-	QueueB --&gt; ConsumerB</pre></div>
+<div class="use-row"><span class="k">Where you&#x27;ll use it</span><span class="v">Pass a reference, not the payload</span></div>
+<div class="diagram"><pre class="mmd-src">flowchart LR
+    Client[Client or Producer] --&gt; Entry[Spring Boot API / Event Entry]
+    Entry --&gt; Logic[Claim Check Logic]
+    Logic --&gt; ServiceA[Service A]
+    Logic --&gt; ServiceB[Service B]
+    ServiceA --&gt; Obs[Logs, Metrics, Traces]
+    ServiceB --&gt; Obs</pre></div>
 </article>
-<article class="card g-easy" data-group="Easy" data-search="idempotency via conditional writes idempotency via conditional writes prevents duplicate processing by storing a record of work that has already been handled. a consumer writes a processing marker to dynamodb with a conditional expression, and only the first write succeeds. easy data &amp; storage make duplicate processing a no-op dynamodb">
+<article class="card g-integration" data-group="Integration" data-search="content-based routing route messages to consumers based on payload fields and routing policies. integration  route messages by payload attributes ">
 <div class="card-head">
   <div class="card-meta">
     <span class="num">07</span>
-    <span class="tier">Easy</span>
-    <span class="family">Data &amp; Storage</span>
+    <span class="tier">Integration</span>
+    
   </div>
-  <h3>Idempotency via Conditional Writes</h3>
-  <p class="desc">Idempotency via Conditional Writes prevents duplicate processing by storing a record of work that has already been handled. A consumer writes a processing marker to DynamoDB with a conditional expression, and only the first write succeeds.</p>
+  <h3>Content-Based Routing</h3>
+  <p class="desc">Route messages to consumers based on payload fields and routing policies.</p>
 </div>
-<div class="services"><span class="svc">DynamoDB</span></div>
-<div class="use-row"><span class="k">Use it to</span><span class="v">Make duplicate processing a no-op</span></div>
-<div class="diagram"><pre class="mmd-src">flowchart LR
-	Producer[Python Producer]
-	Consumer[Lambda Consumer]
-	Table[DynamoDB Idempotency Table]
 
-	Producer --&gt; Consumer
-	Consumer --&gt; Table
-	Table --&gt; Consumer</pre></div>
+<div class="use-row"><span class="k">Where you&#x27;ll use it</span><span class="v">Route messages by payload attributes</span></div>
+<div class="diagram"><pre class="mmd-src">flowchart LR
+    Client[Client or Producer] --&gt; Entry[Spring Boot API / Event Entry]
+    Entry --&gt; Logic[Content-Based Routing Logic]
+    Logic --&gt; ServiceA[Service A]
+    Logic --&gt; ServiceB[Service B]
+    ServiceA --&gt; Obs[Logs, Metrics, Traces]
+    ServiceB --&gt; Obs</pre></div>
 </article>
-<article class="card g-easy" data-group="Easy" data-search="pipes and filters pipes and filters decomposes processing into small, independent steps. each filter performs one transformation, and pipes carry the message from one step to the next. easy messaging &amp; events apply a sequence of small transforms lambda sqs">
+<article class="card g-data-management" data-group="Data Management" data-search="cqrs separate write and read models to optimize command and query workloads independently. data management  separate write model from read model ">
 <div class="card-head">
   <div class="card-meta">
     <span class="num">08</span>
-    <span class="tier">Easy</span>
-    <span class="family">Messaging &amp; Events</span>
+    <span class="tier">Data Management</span>
+    
   </div>
-  <h3>Pipes and Filters</h3>
-  <p class="desc">Pipes and Filters decomposes processing into small, independent steps. Each filter performs one transformation, and pipes carry the message from one step to the next.</p>
+  <h3>CQRS</h3>
+  <p class="desc">Separate write and read models to optimize command and query workloads independently.</p>
 </div>
-<div class="services"><span class="svc">Lambda</span><span class="svc">SQS</span></div>
-<div class="use-row"><span class="k">Use it to</span><span class="v">Apply a sequence of small transforms</span></div>
-<div class="diagram"><pre class="mmd-src">flowchart LR
-	Producer[Producer]
-	Q1[SQS Pipe 1]
-	F1[Lambda Filter 1]
-	Q2[SQS Pipe 2]
-	F2[Lambda Filter 2]
-	Q3[SQS Pipe 3]
-	F3[Lambda Filter 3]
 
-	Producer --&gt; Q1
-	Q1 --&gt; F1
-	F1 --&gt; Q2
-	Q2 --&gt; F2
-	F2 --&gt; Q3
-	Q3 --&gt; F3</pre></div>
+<div class="use-row"><span class="k">Where you&#x27;ll use it</span><span class="v">Separate write model from read model</span></div>
+<div class="diagram"><pre class="mmd-src">flowchart LR
+    Client[Client or Producer] --&gt; Entry[Spring Boot API / Event Entry]
+    Entry --&gt; Logic[CQRS Logic]
+    Logic --&gt; ServiceA[Service A]
+    Logic --&gt; ServiceB[Service B]
+    ServiceA --&gt; Obs[Logs, Metrics, Traces]
+    ServiceB --&gt; Obs</pre></div>
 </article>
-<article class="card g-easy" data-group="Easy" data-search="queue-based load leveling queue-based load leveling smooths traffic bursts by placing sqs between the producer and the consumer. the producer writes quickly, the queue absorbs spikes, and the consumer processes messages at a steady pace. easy messaging &amp; events buffer bursts to protect slow consumers sqs lambda">
+<article class="card g-data-management" data-group="Data Management" data-search="database per service each service owns its own datastore to avoid cross-service schema coupling. data management  each service owns its datastore ">
 <div class="card-head">
   <div class="card-meta">
     <span class="num">09</span>
-    <span class="tier">Easy</span>
-    <span class="family">Messaging &amp; Events</span>
+    <span class="tier">Data Management</span>
+    
   </div>
-  <h3>Queue-Based Load Leveling</h3>
-  <p class="desc">Queue-Based Load Leveling smooths traffic bursts by placing SQS between the producer and the consumer. The producer writes quickly, the queue absorbs spikes, and the consumer processes messages at a steady pace.</p>
+  <h3>Database per Service</h3>
+  <p class="desc">Each service owns its own datastore to avoid cross-service schema coupling.</p>
 </div>
-<div class="services"><span class="svc">SQS</span><span class="svc">Lambda</span></div>
-<div class="use-row"><span class="k">Use it to</span><span class="v">Buffer bursts to protect slow consumers</span></div>
-<div class="diagram"><pre class="mmd-src">flowchart LR
-	Producer[Python Producer]
-	Queue[SQS Queue]
-	Consumer[Lambda Consumer]
 
-	Producer --&gt; Queue
-	Queue --&gt; Consumer</pre></div>
+<div class="use-row"><span class="k">Where you&#x27;ll use it</span><span class="v">Each service owns its datastore</span></div>
+<div class="diagram"><pre class="mmd-src">flowchart LR
+    Client[Client or Producer] --&gt; Entry[Spring Boot API / Event Entry]
+    Entry --&gt; Logic[Database per Service Logic]
+    Logic --&gt; ServiceA[Service A]
+    Logic --&gt; ServiceB[Service B]
+    ServiceA --&gt; Obs[Logs, Metrics, Traces]
+    ServiceB --&gt; Obs</pre></div>
 </article>
-<article class="card g-easy" data-group="Easy" data-search="scheduled batch scheduled batch runs work on a fixed schedule instead of reacting to every request immediately. in aws, eventbridge scheduler (or eventbridge rules) triggers a lambda at a cadence such as every 5 minutes or once per night. easy orchestration run jobs on a schedule eventbridge scheduler lambda batch">
+<article class="card g-reliability" data-group="Reliability" data-search="dead letter queue (dlq) move repeatedly failing messages aside for investigation and controlled replay. reliability  park messages that repeatedly fail ">
 <div class="card-head">
   <div class="card-meta">
     <span class="num">10</span>
-    <span class="tier">Easy</span>
-    <span class="family">Orchestration</span>
+    <span class="tier">Reliability</span>
+    
   </div>
-  <h3>Scheduled Batch</h3>
-  <p class="desc">Scheduled Batch runs work on a fixed schedule instead of reacting to every request immediately. In AWS, EventBridge Scheduler (or EventBridge rules) triggers a Lambda at a cadence such as every 5 minutes or once per night.</p>
+  <h3>Dead Letter Queue (DLQ)</h3>
+  <p class="desc">Move repeatedly failing messages aside for investigation and controlled replay.</p>
 </div>
-<div class="services"><span class="svc">EventBridge Scheduler</span><span class="svc">Lambda</span><span class="svc">Batch</span></div>
-<div class="use-row"><span class="k">Use it to</span><span class="v">Run jobs on a schedule</span></div>
-<div class="diagram"><pre class="mmd-src">flowchart LR
-	Scheduler[EventBridge Schedule]
-	Worker[Lambda Batch Worker]
-	Store[(Data Source)]
 
-	Scheduler --&gt; Worker
-	Worker --&gt; Store</pre></div>
+<div class="use-row"><span class="k">Where you&#x27;ll use it</span><span class="v">Park messages that repeatedly fail</span></div>
+<div class="diagram"><pre class="mmd-src">flowchart LR
+    Client[Client or Producer] --&gt; Entry[Spring Boot API / Event Entry]
+    Entry --&gt; Logic[&quot;Dead Letter Queue (DLQ) Logic&quot;]
+    Logic --&gt; ServiceA[Service A]
+    Logic --&gt; ServiceB[Service B]
+    ServiceA --&gt; Obs[Logs, Metrics, Traces]
+    ServiceB --&gt; Obs</pre></div>
 </article>
-<article class="card g-easy" data-group="Easy" data-search="secrets config externalization secrets and config externalization keeps credentials and environment-specific settings out of application code. in aws, this is commonly done with secrets manager for sensitive values and systems manager parameter store for non-secret configuration. easy data &amp; storage keep credentials and config out of code secrets manager kms ssm">
+<article class="card g-decomposition" data-group="Decomposition" data-search="decompose by business capability split services around business capabilities such as pricing, trading, and accounts. decomposition  one service per business function ">
 <div class="card-head">
   <div class="card-meta">
     <span class="num">11</span>
-    <span class="tier">Easy</span>
-    <span class="family">Data &amp; Storage</span>
+    <span class="tier">Decomposition</span>
+    
   </div>
-  <h3>Secrets Config Externalization</h3>
-  <p class="desc">Secrets and Config Externalization keeps credentials and environment-specific settings out of application code. In AWS, this is commonly done with Secrets Manager for sensitive values and Systems Manager Parameter Store for non-secret configuration.</p>
+  <h3>Decompose by Business Capability</h3>
+  <p class="desc">Split services around business capabilities such as pricing, trading, and accounts.</p>
 </div>
-<div class="services"><span class="svc">Secrets Manager</span><span class="svc">KMS</span><span class="svc">SSM</span></div>
-<div class="use-row"><span class="k">Use it to</span><span class="v">Keep credentials and config out of code</span></div>
-<div class="diagram"><pre class="mmd-src">flowchart LR
-	App[Lambda Application]
-	SM[Secrets Manager]
-	SSM[SSM Parameter Store]
 
-	App --&gt; SM
-	App --&gt; SSM</pre></div>
+<div class="use-row"><span class="k">Where you&#x27;ll use it</span><span class="v">One service per business function</span></div>
+<div class="diagram"><pre class="mmd-src">flowchart LR
+    Client[Client or Producer] --&gt; Entry[Spring Boot API / Event Entry]
+    Entry --&gt; Logic[Decompose by Business Capability Logic]
+    Logic --&gt; ServiceA[Service A]
+    Logic --&gt; ServiceB[Service B]
+    ServiceA --&gt; Obs[Logs, Metrics, Traces]
+    ServiceB --&gt; Obs</pre></div>
 </article>
-<article class="card g-easy" data-group="Easy" data-search="work queue / competing consumers work queue / competing consumers uses one sqs queue and multiple workers that pull from it independently. each message is processed by only one worker, so throughput increases as you add more consumers. easy messaging &amp; events scale out background processing safely sqs lambda ecs">
+<article class="card g-decomposition" data-group="Decomposition" data-search="decompose by subdomain (ddd) align services with bounded contexts so each team owns a clear domain model. decomposition  services map to bounded contexts ">
 <div class="card-head">
   <div class="card-meta">
     <span class="num">12</span>
-    <span class="tier">Easy</span>
-    <span class="family">Messaging &amp; Events</span>
+    <span class="tier">Decomposition</span>
+    
   </div>
-  <h3>Work Queue / Competing Consumers</h3>
-  <p class="desc">Work Queue / Competing Consumers uses one SQS queue and multiple workers that pull from it independently. Each message is processed by only one worker, so throughput increases as you add more consumers.</p>
+  <h3>Decompose by Subdomain (DDD)</h3>
+  <p class="desc">Align services with bounded contexts so each team owns a clear domain model.</p>
 </div>
-<div class="services"><span class="svc">SQS</span><span class="svc">Lambda</span><span class="svc">ECS</span></div>
-<div class="use-row"><span class="k">Use it to</span><span class="v">Scale out background processing safely</span></div>
-<div class="diagram"><pre class="mmd-src">flowchart LR
-	Producer[Python Producer]
-	Queue[SQS Queue]
-	WorkerA[Lambda Worker A]
-	WorkerB[Lambda Worker B]
 
-	Producer --&gt; Queue
-	Queue --&gt; WorkerA
-	Queue --&gt; WorkerB</pre></div>
+<div class="use-row"><span class="k">Where you&#x27;ll use it</span><span class="v">Services map to bounded contexts</span></div>
+<div class="diagram"><pre class="mmd-src">flowchart LR
+    Client[Client or Producer] --&gt; Entry[Spring Boot API / Event Entry]
+    Entry --&gt; Logic[&quot;Decompose by Subdomain (DDD) Logic&quot;]
+    Logic --&gt; ServiceA[Service A]
+    Logic --&gt; ServiceB[Service B]
+    ServiceA --&gt; Obs[Logs, Metrics, Traces]
+    ServiceB --&gt; Obs</pre></div>
 </article>
-<article class="card g-medium" data-group="Medium" data-search="cqrs read side search offloading cqrs read side / search offloading separates the write model from a read-optimized projection. writes update the source-of-truth model, and a separate read-side index or projection serves query-heavy or search-heavy traffic without burdening the transactional store. medium data &amp; storage split write model from an optimized read model dynamodb opensearch lambda">
+<article class="card g-observability-deployment" data-group="Observability &amp; Deployment" data-search="distributed tracing track end-to-end request flow across services using trace and span identifiers. observability &amp; deployment  trace a request across services ">
 <div class="card-head">
   <div class="card-meta">
     <span class="num">13</span>
-    <span class="tier">Medium</span>
-    <span class="family">Data &amp; Storage</span>
+    <span class="tier">Observability &amp; Deployment</span>
+    
   </div>
-  <h3>CQRS Read Side Search Offloading</h3>
-  <p class="desc">CQRS Read Side / Search Offloading separates the write model from a read-optimized projection. Writes update the source-of-truth model, and a separate read-side index or projection serves query-heavy or search-heavy traffic without burdening the transactional store.</p>
+  <h3>Distributed Tracing</h3>
+  <p class="desc">Track end-to-end request flow across services using trace and span identifiers.</p>
 </div>
-<div class="services"><span class="svc">DynamoDB</span><span class="svc">OpenSearch</span><span class="svc">Lambda</span></div>
-<div class="use-row"><span class="k">Use it to</span><span class="v">Split write model from an optimized read model</span></div>
-<div class="diagram"><pre class="mmd-src">flowchart LR
-		Writer[Write API or Event]
-		WriteModel[(Write Model)]
-		Projector[Projection Lambda]
-		ReadIndex[(Read Projection)]
-		Reader[Search API]
 
-		Writer --&gt; WriteModel
-		WriteModel --&gt; Projector
-		Projector --&gt; ReadIndex
-		Reader --&gt; ReadIndex</pre></div>
+<div class="use-row"><span class="k">Where you&#x27;ll use it</span><span class="v">Trace a request across services</span></div>
+<div class="diagram"><pre class="mmd-src">flowchart LR
+    Client[Client or Producer] --&gt; Entry[Spring Boot API / Event Entry]
+    Entry --&gt; Logic[Distributed Tracing Logic]
+    Logic --&gt; ServiceA[Service A]
+    Logic --&gt; ServiceB[Service B]
+    ServiceA --&gt; Obs[Logs, Metrics, Traces]
+    ServiceB --&gt; Obs</pre></div>
 </article>
-<article class="card g-medium" data-group="Medium" data-search="etl data lake etl / data lake moves raw data into centralized storage, transforms it into curated formats, and makes it available for analytics, reporting, or downstream machine workloads. the raw landing zone preserves original events, while curated outputs reshape the data for efficient querying. medium data &amp; storage turn raw data into analytics-ready data s3 glue athena">
+<article class="card g-data-management" data-group="Data Management" data-search="event sourcing persist immutable domain events as the source of truth for system state. data management  store state changes as an event log ">
 <div class="card-head">
   <div class="card-meta">
     <span class="num">14</span>
-    <span class="tier">Medium</span>
-    <span class="family">Data &amp; Storage</span>
+    <span class="tier">Data Management</span>
+    
   </div>
-  <h3>ETL Data Lake</h3>
-  <p class="desc">ETL / Data Lake moves raw data into centralized storage, transforms it into curated formats, and makes it available for analytics, reporting, or downstream machine workloads. The raw landing zone preserves original events, while curated outputs reshape the data for efficient querying.</p>
+  <h3>Event Sourcing</h3>
+  <p class="desc">Persist immutable domain events as the source of truth for system state.</p>
 </div>
-<div class="services"><span class="svc">S3</span><span class="svc">Glue</span><span class="svc">Athena</span></div>
-<div class="use-row"><span class="k">Use it to</span><span class="v">Turn raw data into analytics-ready data</span></div>
-<div class="diagram"><pre class="mmd-src">flowchart LR
-		Source[Raw Source Data]
-		Raw[S3 Raw Bucket]
-		ETL[ETL Processor]
-		Curated[S3 Curated Bucket]
-		Analytics[Analytics Consumers]
 
-		Source --&gt; Raw
-		Raw --&gt; ETL
-		ETL --&gt; Curated
-		Curated --&gt; Analytics</pre></div>
+<div class="use-row"><span class="k">Where you&#x27;ll use it</span><span class="v">Store state changes as an event log</span></div>
+<div class="diagram"><pre class="mmd-src">flowchart LR
+    Client[Client or Producer] --&gt; Entry[Spring Boot API / Event Entry]
+    Entry --&gt; Logic[Event Sourcing Logic]
+    Logic --&gt; ServiceA[Service A]
+    Logic --&gt; ServiceB[Service B]
+    ServiceA --&gt; Obs[Logs, Metrics, Traces]
+    ServiceB --&gt; Obs</pre></div>
 </article>
-<article class="card g-medium" data-group="Medium" data-search="event bus choreography event bus choreography is a decentralized event-driven pattern where services react to business events without a central orchestrator controlling each step. a producer publishes an event once, and independent consumers subscribe to the event type they care about. medium messaging &amp; events let services react to events, no central brain eventbridge lambda">
+<article class="card g-observability-deployment" data-group="Observability &amp; Deployment" data-search="externalized configuration keep environment-specific configuration outside service binaries. observability &amp; deployment  keep config outside code ">
 <div class="card-head">
   <div class="card-meta">
     <span class="num">15</span>
-    <span class="tier">Medium</span>
-    <span class="family">Messaging &amp; Events</span>
+    <span class="tier">Observability &amp; Deployment</span>
+    
   </div>
-  <h3>Event Bus Choreography</h3>
-  <p class="desc">Event Bus Choreography is a decentralized event-driven pattern where services react to business events without a central orchestrator controlling each step. A producer publishes an event once, and independent consumers subscribe to the event type they care about.</p>
+  <h3>Externalized Configuration</h3>
+  <p class="desc">Keep environment-specific configuration outside service binaries.</p>
 </div>
-<div class="services"><span class="svc">EventBridge</span><span class="svc">Lambda</span></div>
-<div class="use-row"><span class="k">Use it to</span><span class="v">Let services react to events, no central brain</span></div>
-<div class="diagram"><pre class="mmd-src">flowchart LR
-		Producer[Order Service]
-		Bus[EventBridge Custom Bus]
-		Inventory[Inventory Lambda]
-		Billing[Billing Lambda]
-		Notify[Notification Lambda]
 
-		Producer --&gt; Bus
-		Bus --&gt; Inventory
-		Bus --&gt; Billing
-		Bus --&gt; Notify</pre></div>
+<div class="use-row"><span class="k">Where you&#x27;ll use it</span><span class="v">Keep config outside code</span></div>
+<div class="diagram"><pre class="mmd-src">flowchart LR
+    Client[Client or Producer] --&gt; Entry[Spring Boot API / Event Entry]
+    Entry --&gt; Logic[Externalized Configuration Logic]
+    Logic --&gt; ServiceA[Service A]
+    Logic --&gt; ServiceB[Service B]
+    ServiceA --&gt; Obs[Logs, Metrics, Traces]
+    ServiceB --&gt; Obs</pre></div>
 </article>
-<article class="card g-medium" data-group="Medium" data-search="orchestrator workflow orchestrator workflow centralizes multi-step business flow in one workflow engine. a controller (typically step functions) invokes each step in order, applies retries and branching rules, and decides whether to continue, fail, or compensate. medium orchestration coordinate multi-step work with retries step functions lambda">
+<article class="card g-observability-deployment" data-group="Observability &amp; Deployment" data-search="health check api expose liveness and readiness endpoints for orchestration and load balancing. observability &amp; deployment  /health endpoint per service ">
 <div class="card-head">
   <div class="card-meta">
     <span class="num">16</span>
-    <span class="tier">Medium</span>
-    <span class="family">Orchestration</span>
+    <span class="tier">Observability &amp; Deployment</span>
+    
   </div>
-  <h3>Orchestrator Workflow</h3>
-  <p class="desc">Orchestrator Workflow centralizes multi-step business flow in one workflow engine. A controller (typically Step Functions) invokes each step in order, applies retries and branching rules, and decides whether to continue, fail, or compensate.</p>
+  <h3>Health Check API</h3>
+  <p class="desc">Expose liveness and readiness endpoints for orchestration and load balancing.</p>
 </div>
-<div class="services"><span class="svc">Step Functions</span><span class="svc">Lambda</span></div>
-<div class="use-row"><span class="k">Use it to</span><span class="v">Coordinate multi-step work with retries</span></div>
-<div class="diagram"><pre class="mmd-src">flowchart LR
-		Producer[Order Event Producer]
-		SFN[Step Functions Orchestrator]
-		V[Validate Lambda]
-		I[Reserve Inventory Lambda]
-		P[Charge Payment Lambda]
-		S[Ship Order Lambda]
-		F[Fail State]
 
-		Producer --&gt; SFN
-		SFN --&gt; V
-		V --&gt; I
-		I --&gt; P
-		P --&gt; S
-		V --&gt; F
-		I --&gt; F
-		P --&gt; F</pre></div>
+<div class="use-row"><span class="k">Where you&#x27;ll use it</span><span class="v">/health endpoint per service</span></div>
+<div class="diagram"><pre class="mmd-src">flowchart LR
+    Client[Client or Producer] --&gt; Entry[Spring Boot API / Event Entry]
+    Entry --&gt; Logic[Health Check API Logic]
+    Logic --&gt; ServiceA[Service A]
+    Logic --&gt; ServiceB[Service B]
+    ServiceA --&gt; Obs[Logs, Metrics, Traces]
+    ServiceB --&gt; Obs</pre></div>
 </article>
-<article class="card g-medium" data-group="Medium" data-search="private networking data tier private networking for data tier places databases and other sensitive data services on private network paths so they are reachable only from approved application tiers. the goal is to keep the data plane off the public internet and enforce access through subnet boundaries, security groups, and controlled endpoints. medium data &amp; storage keep the data plane off the public internet vpc rds vpc endpoints">
+<article class="card g-reliability" data-group="Reliability" data-search="idempotent consumer ensure duplicate message deliveries do not create duplicate side effects. reliability  processing twice is safe ">
 <div class="card-head">
   <div class="card-meta">
     <span class="num">17</span>
-    <span class="tier">Medium</span>
-    <span class="family">Data &amp; Storage</span>
+    <span class="tier">Reliability</span>
+    
   </div>
-  <h3>Private Networking Data Tier</h3>
-  <p class="desc">Private Networking for Data Tier places databases and other sensitive data services on private network paths so they are reachable only from approved application tiers. The goal is to keep the data plane off the public internet and enforce access through subnet boundaries, security groups, and controlled endpoints.</p>
+  <h3>Idempotent Consumer</h3>
+  <p class="desc">Ensure duplicate message deliveries do not create duplicate side effects.</p>
 </div>
-<div class="services"><span class="svc">VPC</span><span class="svc">RDS</span><span class="svc">VPC Endpoints</span></div>
-<div class="use-row"><span class="k">Use it to</span><span class="v">Keep the data plane off the public internet</span></div>
-<div class="diagram"><pre class="mmd-src">flowchart LR
-		Internet[Internet]
-		Public[Public Subnets]
-		App[Private App Subnets]
-		Data[Isolated Data Subnets]
-		DB[(RDS)]
 
-		Internet --&gt; Public
-		Public --&gt; App
-		App --&gt; Data
-		Data --&gt; DB</pre></div>
+<div class="use-row"><span class="k">Where you&#x27;ll use it</span><span class="v">Processing twice is safe</span></div>
+<div class="diagram"><pre class="mmd-src">flowchart LR
+    Client[Client or Producer] --&gt; Entry[Spring Boot API / Event Entry]
+    Entry --&gt; Logic[Idempotent Consumer Logic]
+    Logic --&gt; ServiceA[Service A]
+    Logic --&gt; ServiceB[Service B]
+    ServiceA --&gt; Obs[Logs, Metrics, Traces]
+    ServiceB --&gt; Obs</pre></div>
 </article>
-<article class="card g-medium" data-group="Medium" data-search="scatter gather scatter gather sends one request to multiple parallel workers, then combines the responses into one aggregated result. the scatter step fans work out concurrently, and the gather step waits for the branches that matter and merges their outputs. medium messaging &amp; events fan work out, then aggregate the results step functions map / parallel">
+<article class="card g-observability-deployment" data-group="Observability &amp; Deployment" data-search="log aggregation collect structured logs from services into centralized searchable storage. observability &amp; deployment  centralize structured logs ">
 <div class="card-head">
   <div class="card-meta">
     <span class="num">18</span>
-    <span class="tier">Medium</span>
-    <span class="family">Messaging &amp; Events</span>
+    <span class="tier">Observability &amp; Deployment</span>
+    
   </div>
-  <h3>Scatter Gather</h3>
-  <p class="desc">Scatter Gather sends one request to multiple parallel workers, then combines the responses into one aggregated result. The scatter step fans work out concurrently, and the gather step waits for the branches that matter and merges their outputs.</p>
+  <h3>Log Aggregation</h3>
+  <p class="desc">Collect structured logs from services into centralized searchable storage.</p>
 </div>
-<div class="services"><span class="svc">Step Functions</span><span class="svc">Map / Parallel</span></div>
-<div class="use-row"><span class="k">Use it to</span><span class="v">Fan work out, then aggregate the results</span></div>
-<div class="diagram"><pre class="mmd-src">flowchart LR
-		Client[Client Request]
-		SFN[Step Functions Parallel State]
-		C[Catalog Lambda]
-		R[Reviews Lambda]
-		P[Pricing Lambda]
-		G[Gather Lambda]
 
-		Client --&gt; SFN
-		SFN --&gt; C
-		SFN --&gt; R
-		SFN --&gt; P
-		C --&gt; G
-		R --&gt; G
-		P --&gt; G</pre></div>
+<div class="use-row"><span class="k">Where you&#x27;ll use it</span><span class="v">Centralize structured logs</span></div>
+<div class="diagram"><pre class="mmd-src">flowchart LR
+    Client[Client or Producer] --&gt; Entry[Spring Boot API / Event Entry]
+    Entry --&gt; Logic[Log Aggregation Logic]
+    Logic --&gt; ServiceA[Service A]
+    Logic --&gt; ServiceB[Service B]
+    ServiceA --&gt; Obs[Logs, Metrics, Traces]
+    ServiceB --&gt; Obs</pre></div>
 </article>
-<article class="card g-medium" data-group="Medium" data-search="strangler facade at the edge strangler at the edge incrementally routes traffic from a legacy backend to new services behind a facade, allowing migration without big-bang rewrite. medium api &amp; edge replace a legacy system route by route route 53 alb">
+<article class="card g-integration" data-group="Integration" data-search="message broker / event bus use centralized event routing and filtering rules for system-wide integrations. integration  central routing of events with rules ">
 <div class="card-head">
   <div class="card-meta">
     <span class="num">19</span>
-    <span class="tier">Medium</span>
-    <span class="family">API &amp; Edge</span>
+    <span class="tier">Integration</span>
+    
   </div>
-  <h3>Strangler Facade at the Edge</h3>
-  <p class="desc">Strangler at the edge incrementally routes traffic from a legacy backend to new services behind a facade, allowing migration without big-bang rewrite.</p>
+  <h3>Message Broker / Event Bus</h3>
+  <p class="desc">Use centralized event routing and filtering rules for system-wide integrations.</p>
 </div>
-<div class="services"><span class="svc">Route 53</span><span class="svc">ALB</span></div>
-<div class="use-row"><span class="k">Use it to</span><span class="v">Replace a legacy system route by route</span></div>
+
+<div class="use-row"><span class="k">Where you&#x27;ll use it</span><span class="v">Central routing of events with rules</span></div>
 <div class="diagram"><pre class="mmd-src">flowchart LR
-    Client --&gt; Edge[API Gateway / ALB Facade]
-    Edge --&gt; Legacy[Legacy App]
-    Edge --&gt; NewSvc[New Service]</pre></div>
+    Client[Client or Producer] --&gt; Entry[Spring Boot API / Event Entry]
+    Entry --&gt; Logic[Message Broker / Event Bus Logic]
+    Logic --&gt; ServiceA[Service A]
+    Logic --&gt; ServiceB[Service B]
+    ServiceA --&gt; Obs[Logs, Metrics, Traces]
+    ServiceB --&gt; Obs</pre></div>
 </article>
-<article class="card g-medium" data-group="Medium" data-search="streaming ingestion streaming ingestion continuously accepts event data as it is produced and processes it in near real time. instead of waiting for scheduled batches or individual request/response cycles, events flow through a stream where consumers read ordered records in batches or shards. medium messaging &amp; events process continuous event streams kinesis lambda">
+<article class="card g-observability-deployment" data-group="Observability &amp; Deployment" data-search="metrics &amp; alarms emit business and system metrics and trigger alarms when thresholds breach. observability &amp; deployment  emit business + system metrics ">
 <div class="card-head">
   <div class="card-meta">
     <span class="num">20</span>
-    <span class="tier">Medium</span>
-    <span class="family">Messaging &amp; Events</span>
+    <span class="tier">Observability &amp; Deployment</span>
+    
   </div>
-  <h3>Streaming Ingestion</h3>
-  <p class="desc">Streaming Ingestion continuously accepts event data as it is produced and processes it in near real time. Instead of waiting for scheduled batches or individual request/response cycles, events flow through a stream where consumers read ordered records in batches or shards.</p>
+  <h3>Metrics &amp; Alarms</h3>
+  <p class="desc">Emit business and system metrics and trigger alarms when thresholds breach.</p>
 </div>
-<div class="services"><span class="svc">Kinesis</span><span class="svc">Lambda</span></div>
-<div class="use-row"><span class="k">Use it to</span><span class="v">Process continuous event streams</span></div>
-<div class="diagram"><pre class="mmd-src">flowchart LR
-		Producer[Event Producer]
-		Stream[Kinesis Data Stream]
-		Consumer[Lambda Stream Processor]
-		Metrics[Aggregated Output]
 
-		Producer --&gt; Stream
-		Stream --&gt; Consumer
-		Consumer --&gt; Metrics</pre></div>
+<div class="use-row"><span class="k">Where you&#x27;ll use it</span><span class="v">Emit business + system metrics</span></div>
+<div class="diagram"><pre class="mmd-src">flowchart LR
+    Client[Client or Producer] --&gt; Entry[Spring Boot API / Event Entry]
+    Entry --&gt; Logic[&quot;Metrics &amp; Alarms Logic&quot;]
+    Logic --&gt; ServiceA[Service A]
+    Logic --&gt; ServiceB[Service B]
+    ServiceA --&gt; Obs[Logs, Metrics, Traces]
+    ServiceB --&gt; Obs</pre></div>
 </article>
-<article class="card g-complex" data-group="Complex" data-search="blue green deployment blue/green deployment runs two production-like environments: current (blue) and new (green). traffic stays on blue until green is validated, then cutover switches traffic to green with fast rollback available by switching back. complex deployment cut over releases with instant rollback codedeploy lambda alias alb">
+<article class="card g-integration" data-group="Integration" data-search="publish-subscribe broadcast domain events so independent consumers react without direct service calls. integration  one event, many consumers ">
 <div class="card-head">
   <div class="card-meta">
     <span class="num">21</span>
-    <span class="tier">Complex</span>
-    <span class="family">Deployment</span>
+    <span class="tier">Integration</span>
+    
   </div>
-  <h3>Blue Green Deployment</h3>
-  <p class="desc">Blue/Green Deployment runs two production-like environments: current (blue) and new (green). Traffic stays on blue until green is validated, then cutover switches traffic to green with fast rollback available by switching back.</p>
+  <h3>Publish-Subscribe</h3>
+  <p class="desc">Broadcast domain events so independent consumers react without direct service calls.</p>
 </div>
-<div class="services"><span class="svc">CodeDeploy</span><span class="svc">Lambda Alias</span><span class="svc">ALB</span></div>
-<div class="use-row"><span class="k">Use it to</span><span class="v">Cut over releases with instant rollback</span></div>
+
+<div class="use-row"><span class="k">Where you&#x27;ll use it</span><span class="v">One event, many consumers</span></div>
 <div class="diagram"><pre class="mmd-src">flowchart LR
-		Users[Users] --&gt; ALB[Application Load Balancer]
-		ALB --&gt; Blue[Blue Target Group]
-		ALB --&gt; Green[Green Target Group]
-		CodeDeploy[CodeDeploy Deployment Group] --&gt; Green
-		CloudWatch[CloudWatch Alarms] --&gt; CodeDeploy
-		CodeDeploy --&gt; ALB</pre></div>
+    Client[Client or Producer] --&gt; Entry[Spring Boot API / Event Entry]
+    Entry --&gt; Logic[Publish-Subscribe Logic]
+    Logic --&gt; ServiceA[Service A]
+    Logic --&gt; ServiceB[Service B]
+    ServiceA --&gt; Obs[Logs, Metrics, Traces]
+    ServiceB --&gt; Obs</pre></div>
 </article>
-<article class="card g-complex" data-group="Complex" data-search="bulkhead bulkhead isolates resources so failure or overload in one workload slice does not consume capacity needed by others. the pattern is named after ship compartments: damage in one section should not sink the entire vessel. complex resilience isolate workloads so one can&#x27;t sink the rest sqs lambda concurrency ecs">
+<article class="card g-integration" data-group="Integration" data-search="request-reply over messaging correlate async request and response messages for workflows that cannot use direct http. integration  correlate async responses ">
 <div class="card-head">
   <div class="card-meta">
     <span class="num">22</span>
-    <span class="tier">Complex</span>
-    <span class="family">Resilience</span>
+    <span class="tier">Integration</span>
+    
   </div>
-  <h3>Bulkhead</h3>
-  <p class="desc">Bulkhead isolates resources so failure or overload in one workload slice does not consume capacity needed by others. The pattern is named after ship compartments: damage in one section should not sink the entire vessel.</p>
+  <h3>Request-Reply over Messaging</h3>
+  <p class="desc">Correlate async request and response messages for workflows that cannot use direct HTTP.</p>
 </div>
-<div class="services"><span class="svc">SQS</span><span class="svc">Lambda Concurrency</span><span class="svc">ECS</span></div>
-<div class="use-row"><span class="k">Use it to</span><span class="v">Isolate workloads so one can&#x27;t sink the rest</span></div>
+
+<div class="use-row"><span class="k">Where you&#x27;ll use it</span><span class="v">Correlate async responses</span></div>
 <div class="diagram"><pre class="mmd-src">flowchart LR
-		Client[Clients] --&gt; Router[API Gateway / Router]
-		Router --&gt; Premium[Premium Pool]
-		Router --&gt; Standard[Standard Pool]
-		Premium --&gt; PremiumWorkers[Lambda / ECS Premium Workers]
-		Standard --&gt; StandardWorkers[Lambda / ECS Standard Workers]
-		PremiumWorkers --&gt; Metrics[CloudWatch Metrics]
-		StandardWorkers --&gt; Metrics</pre></div>
+    Client[Client or Producer] --&gt; Entry[Spring Boot API / Event Entry]
+    Entry --&gt; Logic[Request-Reply over Messaging Logic]
+    Logic --&gt; ServiceA[Service A]
+    Logic --&gt; ServiceB[Service B]
+    ServiceA --&gt; Obs[Logs, Metrics, Traces]
+    ServiceB --&gt; Obs</pre></div>
 </article>
-<article class="card g-complex" data-group="Complex" data-search="canary deployment canary deployment releases a new version to a small slice of traffic first, then gradually increases the percentage if metrics remain healthy. it reduces blast radius compared to full cutover and enables data-driven release decisions. complex deployment shift a slice of traffic, then ramp up codedeploy weighted alias cloudwatch">
+<article class="card g-reliability" data-group="Reliability" data-search="retry with exponential backoff + jitter retry transient failures safely with spreading delays to reduce contention. reliability  safely retry transient failures ">
 <div class="card-head">
   <div class="card-meta">
     <span class="num">23</span>
-    <span class="tier">Complex</span>
-    <span class="family">Deployment</span>
+    <span class="tier">Reliability</span>
+    
   </div>
-  <h3>Canary Deployment</h3>
-  <p class="desc">Canary Deployment releases a new version to a small slice of traffic first, then gradually increases the percentage if metrics remain healthy. It reduces blast radius compared to full cutover and enables data-driven release decisions.</p>
+  <h3>Retry with Exponential Backoff + Jitter</h3>
+  <p class="desc">Retry transient failures safely with spreading delays to reduce contention.</p>
 </div>
-<div class="services"><span class="svc">CodeDeploy</span><span class="svc">Weighted Alias</span><span class="svc">CloudWatch</span></div>
-<div class="use-row"><span class="k">Use it to</span><span class="v">Shift a slice of traffic, then ramp up</span></div>
+
+<div class="use-row"><span class="k">Where you&#x27;ll use it</span><span class="v">Safely retry transient failures</span></div>
 <div class="diagram"><pre class="mmd-src">flowchart LR
-		Users[Users] --&gt; Router[Lambda Alias / Load Balancer]
-		Router --&gt; Stable[Stable Version]
-		Router --&gt; Canary[Canary Version]
-		Canary --&gt; Metrics[CloudWatch Alarms + Metrics]
-		Metrics --&gt; Deploy[CodeDeploy Controller]
-		Deploy --&gt; Router</pre></div>
+    Client[Client or Producer] --&gt; Entry[Spring Boot API / Event Entry]
+    Entry --&gt; Logic[Retry with Exponential Backoff + Jitter Logic]
+    Logic --&gt; ServiceA[Service A]
+    Logic --&gt; ServiceB[Service B]
+    ServiceA --&gt; Obs[Logs, Metrics, Traces]
+    ServiceB --&gt; Obs</pre></div>
 </article>
-<article class="card g-complex" data-group="Complex" data-search="change data capture data replication change data capture (cdc) / data replication captures changes from a source system and propagates them to downstream systems without requiring consumers to query the source directly. instead of doing periodic full copies, the system reacts to inserts, updates, and deletes as change events. complex data &amp; storage replicate data changes to another store or region dms kinesis debezium">
+<article class="card g-data-management" data-group="Data Management" data-search="saga (orchestration &amp; choreography) coordinate distributed transactions through local steps and compensating actions. data management  distributed transaction + compensations ">
 <div class="card-head">
   <div class="card-meta">
     <span class="num">24</span>
-    <span class="tier">Complex</span>
-    <span class="family">Data &amp; Storage</span>
+    <span class="tier">Data Management</span>
+    
   </div>
-  <h3>Change Data Capture Data Replication</h3>
-  <p class="desc">Change Data Capture (CDC) / Data Replication captures changes from a source system and propagates them to downstream systems without requiring consumers to query the source directly. Instead of doing periodic full copies, the system reacts to inserts, updates, and deletes as change events.</p>
+  <h3>Saga (Orchestration &amp; Choreography)</h3>
+  <p class="desc">Coordinate distributed transactions through local steps and compensating actions.</p>
 </div>
-<div class="services"><span class="svc">DMS</span><span class="svc">Kinesis</span><span class="svc">Debezium</span></div>
-<div class="use-row"><span class="k">Use it to</span><span class="v">Replicate data changes to another store or region</span></div>
-<div class="diagram"><pre class="mmd-src">flowchart LR
-		Source[Source System]
-		ChangeFeed[Change Feed]
-		Capture[Capture Lambda]
-		Queue[Replication Queue]
-		Replicator[Replication Lambda]
-		Target[Target System]
 
-		Source --&gt; ChangeFeed
-		ChangeFeed --&gt; Capture
-		Capture --&gt; Queue
-		Queue --&gt; Replicator
-		Replicator --&gt; Target</pre></div>
+<div class="use-row"><span class="k">Where you&#x27;ll use it</span><span class="v">Distributed transaction + compensations</span></div>
+<div class="diagram"><pre class="mmd-src">flowchart LR
+    Client[Client or Producer] --&gt; Entry[Spring Boot API / Event Entry]
+    Entry --&gt; Logic[&quot;Saga (Orchestration &amp; Choreography) Logic&quot;]
+    Logic --&gt; ServiceA[Service A]
+    Logic --&gt; ServiceB[Service B]
+    ServiceA --&gt; Obs[Logs, Metrics, Traces]
+    ServiceB --&gt; Obs</pre></div>
 </article>
-<article class="card g-complex" data-group="Complex" data-search="circuit breaker circuit breaker prevents repeated calls to an unhealthy dependency by detecting failures and temporarily short-circuiting requests. it helps protect upstream services from cascading latency and allows downstream systems time to recover. complex resilience fail fast and stop cascading failures lambda dynamodb cloudwatch">
+<article class="card g-observability-deployment" data-group="Observability &amp; Deployment" data-search="service per container / serverless function choose a deployment unit per service using containers or functions based on runtime needs. observability &amp; deployment  deployment unit choices ">
 <div class="card-head">
   <div class="card-meta">
     <span class="num">25</span>
-    <span class="tier">Complex</span>
-    <span class="family">Resilience</span>
+    <span class="tier">Observability &amp; Deployment</span>
+    
   </div>
-  <h3>Circuit Breaker</h3>
-  <p class="desc">Circuit Breaker prevents repeated calls to an unhealthy dependency by detecting failures and temporarily short-circuiting requests. It helps protect upstream services from cascading latency and allows downstream systems time to recover.</p>
+  <h3>Service per Container / Serverless Function</h3>
+  <p class="desc">Choose a deployment unit per service using containers or functions based on runtime needs.</p>
 </div>
-<div class="services"><span class="svc">Lambda</span><span class="svc">DynamoDB</span><span class="svc">CloudWatch</span></div>
-<div class="use-row"><span class="k">Use it to</span><span class="v">Fail fast and stop cascading failures</span></div>
+
+<div class="use-row"><span class="k">Where you&#x27;ll use it</span><span class="v">Deployment unit choices</span></div>
 <div class="diagram"><pre class="mmd-src">flowchart LR
-		Client[Client] --&gt; API[API Gateway]
-		API --&gt; Handler[Lambda Handler]
-		Handler --&gt; Breaker[Circuit Breaker Logic]
-		Breaker --&gt; State[(DynamoDB Breaker State)]
-		Breaker --&gt;|closed/half-open| Downstream[Payment Service]
-		Breaker --&gt;|open| Fallback[Fast Fail / Fallback]
-		Downstream --&gt; Metrics[CloudWatch Metrics]
-		Fallback --&gt; Metrics</pre></div>
+    Client[Client or Producer] --&gt; Entry[Spring Boot API / Event Entry]
+    Entry --&gt; Logic[Service per Container / Serverless Function Logic]
+    Logic --&gt; ServiceA[Service A]
+    Logic --&gt; ServiceB[Service B]
+    ServiceA --&gt; Obs[Logs, Metrics, Traces]
+    ServiceB --&gt; Obs</pre></div>
 </article>
-<article class="card g-complex" data-group="Complex" data-search="multi region failover multi-region failover keeps an application available during regional outages by routing traffic to a healthy secondary region when primary health checks fail. complex resilience stay available when a region goes dark route 53 global tables health checks">
+<article class="card g-data-management" data-group="Data Management" data-search="shared data anti-pattern awareness highlight why shared tables between services create hidden coupling and deployment risk. data management  why services must not share tables ">
 <div class="card-head">
   <div class="card-meta">
     <span class="num">26</span>
-    <span class="tier">Complex</span>
-    <span class="family">Resilience</span>
+    <span class="tier">Data Management</span>
+    
   </div>
-  <h3>Multi Region Failover</h3>
-  <p class="desc">Multi-Region Failover keeps an application available during regional outages by routing traffic to a healthy secondary region when primary health checks fail.</p>
+  <h3>Shared Data Anti-pattern awareness</h3>
+  <p class="desc">Highlight why shared tables between services create hidden coupling and deployment risk.</p>
 </div>
-<div class="services"><span class="svc">Route 53</span><span class="svc">Global Tables</span><span class="svc">Health Checks</span></div>
-<div class="use-row"><span class="k">Use it to</span><span class="v">Stay available when a region goes dark</span></div>
+
+<div class="use-row"><span class="k">Where you&#x27;ll use it</span><span class="v">Why services must not share tables</span></div>
 <div class="diagram"><pre class="mmd-src">flowchart LR
-    Users --&gt; R53[Route 53 Failover Record]
-    R53 --&gt; Primary[Primary Region]
-    R53 --&gt; Secondary[Secondary Region]</pre></div>
+    Client[Client or Producer] --&gt; Entry[Spring Boot API / Event Entry]
+    Entry --&gt; Logic[Shared Data Anti-pattern awareness Logic]
+    Logic --&gt; ServiceA[Service A]
+    Logic --&gt; ServiceB[Service B]
+    ServiceA --&gt; Obs[Logs, Metrics, Traces]
+    ServiceB --&gt; Obs</pre></div>
 </article>
-<article class="card g-complex" data-group="Complex" data-search="rate limiting and throttling rate limiting and throttling control how fast requests are accepted and processed. the goal is to protect shared services, preserve fairness across clients, and keep costs and latency predictable under bursty traffic. complex api &amp; edge protect downstream services and public apis api gateway waf usage plans">
+<article class="card g-decomposition" data-group="Decomposition" data-search="sidecar attach helper runtime components next to services for logging, auth, or proxy behavior. decomposition  helper process beside the main service ">
 <div class="card-head">
   <div class="card-meta">
     <span class="num">27</span>
-    <span class="tier">Complex</span>
-    <span class="family">API &amp; Edge</span>
+    <span class="tier">Decomposition</span>
+    
   </div>
-  <h3>Rate Limiting and Throttling</h3>
-  <p class="desc">Rate limiting and throttling control how fast requests are accepted and processed. The goal is to protect shared services, preserve fairness across clients, and keep costs and latency predictable under bursty traffic.</p>
+  <h3>Sidecar</h3>
+  <p class="desc">Attach helper runtime components next to services for logging, auth, or proxy behavior.</p>
 </div>
-<div class="services"><span class="svc">API Gateway</span><span class="svc">WAF</span><span class="svc">Usage Plans</span></div>
-<div class="use-row"><span class="k">Use it to</span><span class="v">Protect downstream services and public APIs</span></div>
-<div class="diagram"><pre class="mmd-src">flowchart LR
-    Client[Client]
-    APIGW[API Gateway Usage Plan]
-    Lambda[Lambda Handler]
-    CW[CloudWatch Metrics and Alarms]
 
-    Client --&gt; APIGW
-    APIGW --&gt;|Allowed| Lambda
-    APIGW --&gt;|Throttled 429| Client
-    Lambda --&gt; CW
-    APIGW --&gt; CW</pre></div>
+<div class="use-row"><span class="k">Where you&#x27;ll use it</span><span class="v">Helper process beside the main service</span></div>
+<div class="diagram"><pre class="mmd-src">flowchart LR
+    Client[Client or Producer] --&gt; Entry[Spring Boot API / Event Entry]
+    Entry --&gt; Logic[Sidecar Logic]
+    Logic --&gt; ServiceA[Service A]
+    Logic --&gt; ServiceB[Service B]
+    ServiceA --&gt; Obs[Logs, Metrics, Traces]
+    ServiceB --&gt; Obs</pre></div>
 </article>
-<article class="card g-complex" data-group="Complex" data-search="retry with backoff jitter retry with backoff jitter retries transient failures with increasing delay and randomization between attempts. the growing delay reduces pressure on a struggling dependency, and jitter prevents many clients from retrying at the exact same time. complex resilience recover from transient failures without a storm lambda aws sdk step functions">
+<article class="card g-decomposition" data-group="Decomposition" data-search="strangler fig migrate from monolith to services gradually by routing traffic endpoint by endpoint. decomposition  incrementally replace a monolith ">
 <div class="card-head">
   <div class="card-meta">
     <span class="num">28</span>
-    <span class="tier">Complex</span>
-    <span class="family">Resilience</span>
+    <span class="tier">Decomposition</span>
+    
   </div>
-  <h3>Retry with Backoff Jitter</h3>
-  <p class="desc">Retry with Backoff Jitter retries transient failures with increasing delay and randomization between attempts. The growing delay reduces pressure on a struggling dependency, and jitter prevents many clients from retrying at the exact same time.</p>
+  <h3>Strangler Fig</h3>
+  <p class="desc">Migrate from monolith to services gradually by routing traffic endpoint by endpoint.</p>
 </div>
-<div class="services"><span class="svc">Lambda</span><span class="svc">AWS SDK</span><span class="svc">Step Functions</span></div>
-<div class="use-row"><span class="k">Use it to</span><span class="v">Recover from transient failures without a storm</span></div>
+
+<div class="use-row"><span class="k">Where you&#x27;ll use it</span><span class="v">Incrementally replace a monolith</span></div>
 <div class="diagram"><pre class="mmd-src">flowchart LR
-		Caller[Caller] --&gt; Attempt[Attempt Call]
-		Attempt --&gt;|Success| Done[Return Success]
-		Attempt --&gt;|Retryable Failure| Calc[Compute Exponential Backoff]
-		Calc --&gt; Jitter[Add Random Jitter]
-		Jitter --&gt; Wait[Sleep]
-		Wait --&gt; Check{Max Attempts Reached?}
-		Check --&gt;|No| Attempt
-		Check --&gt;|Yes| Fail[Return Failure / Fallback]</pre></div>
+    Client[Client or Producer] --&gt; Entry[Spring Boot API / Event Entry]
+    Entry --&gt; Logic[Strangler Fig Logic]
+    Logic --&gt; ServiceA[Service A]
+    Logic --&gt; ServiceB[Service B]
+    ServiceA --&gt; Obs[Logs, Metrics, Traces]
+    ServiceB --&gt; Obs</pre></div>
 </article>
-<article class="card g-complex" data-group="Complex" data-search="rolling deployment rolling deployment updates a service incrementally by replacing instances or tasks in batches instead of all at once. it keeps the service available while new versions are introduced gradually. complex deployment replace instances in controlled batches ecs auto scaling">
+<article class="card g-reliability" data-group="Reliability" data-search="timeouts &amp; fail fast bound call latency and abort quickly when downstream operations exceed limits. reliability  bound every remote call ">
 <div class="card-head">
   <div class="card-meta">
     <span class="num">29</span>
-    <span class="tier">Complex</span>
-    <span class="family">Deployment</span>
+    <span class="tier">Reliability</span>
+    
   </div>
-  <h3>Rolling Deployment</h3>
-  <p class="desc">Rolling Deployment updates a service incrementally by replacing instances or tasks in batches instead of all at once. It keeps the service available while new versions are introduced gradually.</p>
+  <h3>Timeouts &amp; Fail Fast</h3>
+  <p class="desc">Bound call latency and abort quickly when downstream operations exceed limits.</p>
 </div>
-<div class="services"><span class="svc">ECS</span><span class="svc">Auto Scaling</span></div>
-<div class="use-row"><span class="k">Use it to</span><span class="v">Replace instances in controlled batches</span></div>
+
+<div class="use-row"><span class="k">Where you&#x27;ll use it</span><span class="v">Bound every remote call</span></div>
 <div class="diagram"><pre class="mmd-src">flowchart LR
-    OldA[Old v1 Tasks] --&gt; NewA[New v2 Batch 1]
-    NewA --&gt; NewB[New v2 Batch 2]
-    NewB --&gt; NewC[New v2 Batch 3]</pre></div>
+    Client[Client or Producer] --&gt; Entry[Spring Boot API / Event Entry]
+    Entry --&gt; Logic[&quot;Timeouts &amp; Fail Fast Logic&quot;]
+    Logic --&gt; ServiceA[Service A]
+    Logic --&gt; ServiceB[Service B]
+    ServiceA --&gt; Obs[Logs, Metrics, Traces]
+    ServiceB --&gt; Obs</pre></div>
 </article>
-<article class="card g-complex" data-group="Complex" data-search="saga with compensation saga with compensation coordinates a multi-step distributed workflow where each successful step has a matching undo action. if a later step fails, compensation runs in reverse order to restore consistency. complex orchestration keep distributed transactions consistent step functions lambda">
+<article class="card g-data-management" data-group="Data Management" data-search="transactional outbox store state change and outgoing event together, then publish asynchronously. data management  publish events reliably after a write ">
 <div class="card-head">
   <div class="card-meta">
     <span class="num">30</span>
-    <span class="tier">Complex</span>
-    <span class="family">Orchestration</span>
-  </div>
-  <h3>Saga with Compensation</h3>
-  <p class="desc">Saga with Compensation coordinates a multi-step distributed workflow where each successful step has a matching undo action. If a later step fails, compensation runs in reverse order to restore consistency.</p>
-</div>
-<div class="services"><span class="svc">Step Functions</span><span class="svc">Lambda</span></div>
-<div class="use-row"><span class="k">Use it to</span><span class="v">Keep distributed transactions consistent</span></div>
-<div class="diagram"><pre class="mmd-src">flowchart LR
-		Start[Start Saga] --&gt; Reserve[Reserve Inventory]
-		Reserve --&gt; Pay[Capture Payment]
-		Pay --&gt; Ship[Create Shipment]
-		Ship --&gt; End[Success]
-
-		Ship --&gt;|Fail| Refund[Compensate: Refund Payment]
-		Refund --&gt; Release[Compensate: Release Inventory]
-		Release --&gt; Failed[Compensated Failure]</pre></div>
-</article>
-<article class="card g-complex" data-group="Complex" data-search="sidecar sidecar deploys a helper component next to the main application runtime so cross-cutting concerns can be added without changing the application code directly. the sidecar shares the same task or pod boundary as the app and handles concerns such as logging, auth proxying, metrics, or service mesh behavior. complex deployment add cross-cutting capabilities beside the app ecs eks envoy">
-<div class="card-head">
-  <div class="card-meta">
-    <span class="num">31</span>
-    <span class="tier">Complex</span>
-    <span class="family">Deployment</span>
-  </div>
-  <h3>Sidecar</h3>
-  <p class="desc">Sidecar deploys a helper component next to the main application runtime so cross-cutting concerns can be added without changing the application code directly. The sidecar shares the same task or pod boundary as the app and handles concerns such as logging, auth proxying, metrics, or service mesh behavior.</p>
-</div>
-<div class="services"><span class="svc">ECS</span><span class="svc">EKS</span><span class="svc">Envoy</span></div>
-<div class="use-row"><span class="k">Use it to</span><span class="v">Add cross-cutting capabilities beside the app</span></div>
-<div class="diagram"><pre class="mmd-src">flowchart LR
-		Client[Client]
-		Task[ECS Task / Pod]
-		App[App Container]
-		Sidecar[Sidecar Container]
-		Sink[Logs / Auth / Metrics Sink]
-
-		Client --&gt; Task
-		Task --&gt; App
-		App --&gt; Sidecar
-		Sidecar --&gt; Sink</pre></div>
-</article>
-<article class="card g-complex" data-group="Complex" data-search="timeout timeout sets an upper bound on how long a request can wait for a dependency before failing or falling back. it prevents stuck calls from consuming worker capacity and keeps service latency predictable. complex resilience bound latency and failure blast radius lambda aws sdk step functions">
-<div class="card-head">
-  <div class="card-meta">
-    <span class="num">32</span>
-    <span class="tier">Complex</span>
-    <span class="family">Resilience</span>
-  </div>
-  <h3>Timeout</h3>
-  <p class="desc">Timeout sets an upper bound on how long a request can wait for a dependency before failing or falling back. It prevents stuck calls from consuming worker capacity and keeps service latency predictable.</p>
-</div>
-<div class="services"><span class="svc">Lambda</span><span class="svc">AWS SDK</span><span class="svc">Step Functions</span></div>
-<div class="use-row"><span class="k">Use it to</span><span class="v">Bound latency and failure blast radius</span></div>
-<div class="diagram"><pre class="mmd-src">sequenceDiagram
-		participant Client
-		participant API as API Gateway
-		participant Service as Lambda Service
-		participant Downstream as Downstream API
-
-		Client-&gt;&gt;API: Request
-		API-&gt;&gt;Service: Invoke
-		Service-&gt;&gt;Downstream: Call with timeout budget
-		alt Returns before deadline
-				Downstream--&gt;&gt;Service: Response
-				Service--&gt;&gt;API: Success
-		else Exceeds deadline
-				Service--&gt;&gt;API: Timeout fallback
-		end
-		API--&gt;&gt;Client: Final response</pre></div>
-</article>
-<article class="card g-complex" data-group="Complex" data-search="transactional outbox transactional outbox ensures that business data changes and event publication stay consistent without requiring a distributed transaction across the database and message broker. the application writes the business record and an outbox event in the same local transaction, then a relay process publishes the outbox event separately. complex messaging &amp; events guarantee events publish after a db write dynamodb streams lambda">
-<div class="card-head">
-  <div class="card-meta">
-    <span class="num">33</span>
-    <span class="tier">Complex</span>
-    <span class="family">Messaging &amp; Events</span>
+    <span class="tier">Data Management</span>
+    
   </div>
   <h3>Transactional Outbox</h3>
-  <p class="desc">Transactional Outbox ensures that business data changes and event publication stay consistent without requiring a distributed transaction across the database and message broker. The application writes the business record and an outbox event in the same local transaction, then a relay process publishes the outbox event separately.</p>
+  <p class="desc">Store state change and outgoing event together, then publish asynchronously.</p>
 </div>
-<div class="services"><span class="svc">DynamoDB</span><span class="svc">Streams</span><span class="svc">Lambda</span></div>
-<div class="use-row"><span class="k">Use it to</span><span class="v">Guarantee events publish after a DB write</span></div>
-<div class="diagram"><pre class="mmd-src">flowchart LR
-		App[Service Write]
-		Orders[(Orders Store)]
-		Outbox[(Outbox Store)]
-		Relay[Outbox Relay]
-		Queue[SQS or SNS]
 
-		App --&gt; Orders
-		App --&gt; Outbox
-		Outbox --&gt; Relay
-		Relay --&gt; Queue</pre></div>
+<div class="use-row"><span class="k">Where you&#x27;ll use it</span><span class="v">Publish events reliably after a write</span></div>
+<div class="diagram"><pre class="mmd-src">flowchart LR
+    Client[Client or Producer] --&gt; Entry[Spring Boot API / Event Entry]
+    Entry --&gt; Logic[Transactional Outbox Logic]
+    Logic --&gt; ServiceA[Service A]
+    Logic --&gt; ServiceB[Service B]
+    ServiceA --&gt; Obs[Logs, Metrics, Traces]
+    ServiceB --&gt; Obs</pre></div>
 </article>
   </div>
 </main>
