@@ -1,0 +1,1035 @@
+<title>AWS Design Patterns — Visual Field Guide</title>
+<style>
+  :root{
+    --paper:#eef1f4; --panel:#ffffff; --panel-2:#f6f8fa;
+    --ink:#16202b; --ink-soft:#3d4c5a; --muted:#68798a; --faint:#93a3b1;
+    --line:#d9e0e7; --line-strong:#c4ced8;
+    --accent:#e07b12; --accent-soft:#f6e2c9;
+    --easy:#1f8f74; --easy-bg:#e3f2ec;
+    --medium:#b9832a; --medium-bg:#f6ecd6;
+    --complex:#bd5a5a; --complex-bg:#f6e2e0;
+    --diagram-bg:#f4f7fa; --diagram-grid:#e2e9f0;
+    --shadow:0 1px 2px rgba(20,35,50,.04),0 8px 24px -12px rgba(20,35,50,.18);
+    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --radius:14px;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --paper:#0d131a; --panel:#151d27; --panel-2:#111922;
+      --ink:#e8eef4; --ink-soft:#c2ceda; --muted:#8b9cab; --faint:#63768a;
+      --line:#243140; --line-strong:#31424f;
+      --accent:#f59524; --accent-soft:#3a2b16;
+      --easy:#4cc4a3; --easy-bg:#12352c;
+      --medium:#e0b256; --medium-bg:#3a2f14;
+      --complex:#e08585; --complex-bg:#3c211f;
+      --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -14px rgba(0,0,0,.6);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#eef1f4; --panel:#ffffff; --panel-2:#f6f8fa;
+    --ink:#16202b; --ink-soft:#3d4c5a; --muted:#68798a; --faint:#93a3b1;
+    --line:#d9e0e7; --line-strong:#c4ced8;
+    --accent:#e07b12; --accent-soft:#f6e2c9;
+    --easy:#1f8f74; --easy-bg:#e3f2ec; --medium:#b9832a; --medium-bg:#f6ecd6;
+    --complex:#bd5a5a; --complex-bg:#f6e2e0;
+    --diagram-bg:#f4f7fa; --diagram-grid:#e2e9f0;
+    --shadow:0 1px 2px rgba(20,35,50,.04),0 8px 24px -12px rgba(20,35,50,.18);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d131a; --panel:#151d27; --panel-2:#111922;
+    --ink:#e8eef4; --ink-soft:#c2ceda; --muted:#8b9cab; --faint:#63768a;
+    --line:#243140; --line-strong:#31424f;
+    --accent:#f59524; --accent-soft:#3a2b16;
+    --easy:#4cc4a3; --easy-bg:#12352c; --medium:#e0b256; --medium-bg:#3a2f14;
+    --complex:#e08585; --complex-bg:#3c211f;
+    --diagram-bg:#f4f7fa; --diagram-grid:#e2e9f0;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -14px rgba(0,0,0,.6);
+  }
+
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);
+    line-height:1.55;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 24px;}
+
+  /* ---------- header ---------- */
+  header.top{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--paper) 86%,transparent);
+    backdrop-filter:saturate(1.4) blur(12px);border-bottom:1px solid var(--line);}
+  .top-inner{display:flex;align-items:center;gap:18px;padding:14px 24px;max-width:1240px;margin:0 auto;}
+  .brand{display:flex;align-items:center;gap:12px;min-width:0;}
+  .logo{width:34px;height:34px;border-radius:9px;flex:none;
+    background:linear-gradient(135deg,var(--accent),#c8620a);position:relative;box-shadow:var(--shadow);}
+  .logo::before,.logo::after{content:"";position:absolute;background:#fff;opacity:.92;border-radius:2px;}
+  .logo::before{width:14px;height:2.4px;top:11px;left:10px;box-shadow:0 6px 0 #fff,0 12px 0 #fff;}
+  .logo::after{width:2.4px;height:14px;top:11px;left:10px;}
+  .brand h1{font-size:15px;margin:0;font-weight:750;letter-spacing:-.01em;white-space:nowrap;}
+  .brand .sub{font-family:var(--mono);font-size:10.5px;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;}
+  .top-spacer{flex:1;}
+  .count-badge{font-family:var(--mono);font-size:12px;color:var(--ink-soft);
+    background:var(--panel);border:1px solid var(--line);padding:6px 11px;border-radius:8px;white-space:nowrap;}
+  .count-badge b{color:var(--accent);}
+  .theme-btn{font-family:var(--mono);font-size:11px;color:var(--ink-soft);background:var(--panel);
+    border:1px solid var(--line);padding:7px 10px;border-radius:8px;cursor:pointer;letter-spacing:.03em;}
+  .theme-btn:hover{border-color:var(--line-strong);}
+
+  /* ---------- hero ---------- */
+  .hero{padding:52px 0 30px;position:relative;overflow:hidden;}
+  .hero::before{content:"";position:absolute;inset:0;pointer-events:none;
+    background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+    background-size:44px 44px;opacity:.35;-webkit-mask-image:radial-gradient(ellipse 80% 70% at 30% 0%,#000,transparent 75%);
+    mask-image:radial-gradient(ellipse 80% 70% at 30% 0%,#000,transparent 75%);}
+  .hero-inner{position:relative;max-width:760px;}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);
+    display:inline-flex;align-items:center;gap:8px;margin-bottom:16px;}
+  .eyebrow::before{content:"";width:26px;height:1.5px;background:var(--accent);}
+  .hero h2{font-size:clamp(30px,5vw,50px);line-height:1.04;margin:0 0 16px;font-weight:800;letter-spacing:-.025em;text-wrap:balance;}
+  .hero h2 em{font-style:normal;color:var(--accent);}
+  .hero p{font-size:17px;color:var(--ink-soft);margin:0 0 26px;max-width:60ch;}
+  .stats{display:flex;flex-wrap:wrap;gap:26px;}
+  .stat .n{font-family:var(--mono);font-size:26px;font-weight:600;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1;}
+  .stat .l{font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-top:5px;}
+  .stat.e .n{color:var(--easy)} .stat.m .n{color:var(--medium)} .stat.c .n{color:var(--complex)}
+
+  /* ---------- controls ---------- */
+  .controls{position:sticky;top:63px;z-index:30;background:color-mix(in srgb,var(--paper) 90%,transparent);
+    backdrop-filter:blur(8px);padding:14px 0 12px;margin-top:8px;border-bottom:1px solid var(--line);}
+  .controls-inner{display:flex;flex-wrap:wrap;gap:12px;align-items:center;}
+  .search{position:relative;flex:1;min-width:220px;}
+  .search input{width:100%;font-family:var(--sans);font-size:14px;color:var(--ink);background:var(--panel);
+    border:1px solid var(--line);border-radius:10px;padding:10px 14px 10px 38px;outline:none;transition:border-color .15s,box-shadow .15s;}
+  .search input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft);}
+  .search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:16px;height:16px;stroke:var(--muted);fill:none;}
+  .chips{display:flex;flex-wrap:wrap;gap:7px;}
+  .chip{font-family:var(--mono);font-size:12px;letter-spacing:.02em;cursor:pointer;user-select:none;
+    background:var(--panel);border:1px solid var(--line);color:var(--ink-soft);padding:8px 13px;border-radius:999px;
+    display:inline-flex;align-items:center;gap:7px;transition:all .14s;}
+  .chip:hover{border-color:var(--line-strong);color:var(--ink);}
+  .chip .dot{width:8px;height:8px;border-radius:50%;background:var(--faint);}
+  .chip[data-k="Easy"] .dot{background:var(--easy)} .chip[data-k="Medium"] .dot{background:var(--medium)} .chip[data-k="Complex"] .dot{background:var(--complex)}
+  .chip.on{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+  .chip.on:hover{color:var(--paper);}
+  .chip.on .dot{box-shadow:0 0 0 2px color-mix(in srgb,var(--paper) 40%,transparent);}
+
+  /* ---------- grid ---------- */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:20px;padding:26px 0 60px;}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;
+    display:flex;flex-direction:column;box-shadow:var(--shadow);transition:transform .16s,border-color .16s,box-shadow .16s;}
+  .card:hover{transform:translateY(-3px);border-color:var(--line-strong);}
+  .card-head{padding:16px 18px 12px 21px;border-bottom:1px solid var(--line);position:relative;}
+  .card-head::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;}
+  .card.t-Easy .card-head::before{background:var(--easy)}
+  .card.t-Medium .card-head::before{background:var(--medium)}
+  .card.t-Complex .card-head::before{background:var(--complex)}
+  .card-meta{display:flex;align-items:center;gap:10px;margin-bottom:9px;}
+  .num{font-family:var(--mono);font-size:11px;color:var(--faint);font-variant-numeric:tabular-nums;}
+  .tier{font-family:var(--mono);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;
+    padding:3px 8px;border-radius:5px;}
+  .t-Easy .tier{color:var(--easy);background:var(--easy-bg)}
+  .t-Medium .tier{color:var(--medium);background:var(--medium-bg)}
+  .t-Complex .tier{color:var(--complex);background:var(--complex-bg)}
+  .family{font-family:var(--mono);font-size:10.5px;color:var(--muted);margin-left:auto;letter-spacing:.02em;}
+  .card h3{margin:0 0 6px;font-size:19px;font-weight:730;letter-spacing:-.015em;text-wrap:balance;}
+  .card .desc{margin:0;font-size:13.5px;color:var(--ink-soft);line-height:1.5;}
+  .services{display:flex;flex-wrap:wrap;gap:6px;padding:12px 18px;border-bottom:1px solid var(--line);}
+  .svc{font-family:var(--mono);font-size:11px;color:var(--ink-soft);background:var(--panel-2);
+    border:1px solid var(--line);padding:4px 8px;border-radius:6px;letter-spacing:.01em;}
+  .use-row{padding:11px 18px;display:flex;gap:10px;align-items:baseline;background:var(--panel-2);}
+  .use-row .k{font-family:var(--mono);font-size:9.5px;text-transform:uppercase;letter-spacing:.09em;color:var(--faint);white-space:nowrap;}
+  .use-row .v{font-size:13px;color:var(--ink-soft);}
+  .diagram{background:var(--diagram-bg);
+    background-image:linear-gradient(var(--diagram-grid) 1px,transparent 1px),linear-gradient(90deg,var(--diagram-grid) 1px,transparent 1px);
+    background-size:20px 20px;padding:18px 16px;overflow-x:auto;border-top:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;min-height:130px;margin-top:auto;}
+  .diagram pre.mermaid{margin:0;background:none;border:0;padding:0;width:100%;text-align:center;font-size:0;line-height:0;}
+  .diagram pre.mermaid svg{max-width:100%;height:auto;}
+  .no-diagram{font-family:var(--mono);font-size:11px;color:var(--faint);padding:24px;}
+
+  .empty{grid-column:1/-1;text-align:center;padding:70px 20px;color:var(--muted);font-family:var(--mono);font-size:14px;}
+  footer{border-top:1px solid var(--line);padding:26px 0 40px;color:var(--muted);font-family:var(--mono);font-size:11.5px;letter-spacing:.02em;}
+  footer .wrap{display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:space-between;}
+  a{color:var(--accent);text-decoration:none;}
+  @media (max-width:560px){
+    .grid{grid-template-columns:1fr}
+    .top-inner{gap:10px;padding:12px 16px}
+    .brand .sub{display:none}
+    .wrap{padding:0 16px}
+    .hero{padding:38px 0 22px}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<header class="top">
+  <div class="top-inner">
+    <div class="brand">
+      <div class="logo" aria-hidden="true"></div>
+      <div>
+        <h1>AWS Design Patterns</h1>
+        <div class="sub">Visual Field Guide</div>
+      </div>
+    </div>
+    <div class="top-spacer"></div>
+    <div class="count-badge"><b id="shown">33</b> / 33 patterns</div>
+    <button class="theme-btn" id="themeBtn" type="button">◐ Theme</button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-inner">
+    <div class="eyebrow">Cloud &amp; Integration Architecture</div>
+    <h2>33 patterns every architect is expected to <em>recognize on sight</em>.</h2>
+    <p>A visual catalog of AWS-flavored design patterns — each paired with the real services that implement it and the architecture diagram that makes it click. Filter by difficulty, search by service, and read the wiring at a glance.</p>
+    <div class="stats">
+      <div class="stat"><div class="n">33</div><div class="l">Patterns</div></div>
+      <div class="stat e"><div class="n">12</div><div class="l">Easy</div></div>
+      <div class="stat m"><div class="n">8</div><div class="l">Medium</div></div>
+      <div class="stat c"><div class="n">13</div><div class="l">Complex</div></div>
+      <div class="stat"><div class="n">6</div><div class="l">Families</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="controls">
+  <div class="wrap controls-inner">
+    <label class="search">
+      <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="q" type="search" placeholder="Search patterns, services, use cases…  (e.g. SQS, retry, Kinesis)" autocomplete="off">
+    </label>
+    <div class="chips" id="tierChips">
+      <span class="chip on" data-k="all">All tiers</span>
+      <span class="chip" data-k="Easy"><span class="dot"></span>Easy</span>
+      <span class="chip" data-k="Medium"><span class="dot"></span>Medium</span>
+      <span class="chip" data-k="Complex"><span class="dot"></span>Complex</span>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+  <div class="grid" id="grid">
+<article class="card t-Easy" data-tier="Easy" data-search="api gateway lambda serverless api api gateway + lambda is a serverless request/response pattern. api gateway handles http concerns and routes requests to lambda, which runs business logic. build lightweight request/response apis api &amp; edge api gateway lambda dynamodb">
+<div class="card-head">
+  <div class="card-meta">
+    <span class="num">01</span>
+    <span class="tier">Easy</span>
+    <span class="family">API &amp; Edge</span>
+  </div>
+  <h3>API Gateway Lambda Serverless API</h3>
+  <p class="desc">API Gateway + Lambda is a serverless request/response pattern. API Gateway handles HTTP concerns and routes requests to Lambda, which runs business logic.</p>
+</div>
+<div class="services"><span class="svc">API Gateway</span><span class="svc">Lambda</span><span class="svc">DynamoDB</span></div>
+<div class="use-row"><span class="k">Use&nbsp;it&nbsp;to</span><span class="v">Build lightweight request/response APIs</span></div>
+<div class="diagram"><pre class="mermaid">%%{init: {&#x27;theme&#x27;:&#x27;base&#x27;,&#x27;themeVariables&#x27;:{&#x27;fontFamily&#x27;:&#x27;ui-monospace, SFMono-Regular, Menlo, monospace&#x27;,&#x27;fontSize&#x27;:&#x27;12.5px&#x27;,&#x27;primaryColor&#x27;:&#x27;#eef2f6&#x27;,&#x27;primaryBorderColor&#x27;:&#x27;#8ba0b3&#x27;,&#x27;primaryTextColor&#x27;:&#x27;#17222e&#x27;,&#x27;secondaryColor&#x27;:&#x27;#e7edf3&#x27;,&#x27;tertiaryColor&#x27;:&#x27;#f2f5f8&#x27;,&#x27;lineColor&#x27;:&#x27;#7d93a6&#x27;,&#x27;clusterBkg&#x27;:&#x27;#f5f8fb&#x27;,&#x27;clusterBorder&#x27;:&#x27;#c3d0dc&#x27;,&#x27;edgeLabelBackground&#x27;:&#x27;#ffffff&#x27;}}}%%
+flowchart LR
+	Client[HTTP Client]
+	Api[API Gateway]
+	Fn[Lambda Handler]
+
+	Client --&gt; Api
+	Api --&gt; Fn
+	Fn --&gt; Api
+	Api --&gt; Client</pre></div>
+</article>
+<article class="card t-Easy" data-tier="Easy" data-search="cache aside cache-aside improves read performance by checking a cache first and only querying the primary database on cache misses. the application is responsible for populating and updating the cache. read through a cache before the database data &amp; storage elasticache dax lambda">
+<div class="card-head">
+  <div class="card-meta">
+    <span class="num">02</span>
+    <span class="tier">Easy</span>
+    <span class="family">Data &amp; Storage</span>
+  </div>
+  <h3>Cache Aside</h3>
+  <p class="desc">Cache-Aside improves read performance by checking a cache first and only querying the primary database on cache misses. The application is responsible for populating and updating the cache.</p>
+</div>
+<div class="services"><span class="svc">ElastiCache</span><span class="svc">DAX</span><span class="svc">Lambda</span></div>
+<div class="use-row"><span class="k">Use&nbsp;it&nbsp;to</span><span class="v">Read through a cache before the database</span></div>
+<div class="diagram"><pre class="mermaid">%%{init: {&#x27;theme&#x27;:&#x27;base&#x27;,&#x27;themeVariables&#x27;:{&#x27;fontFamily&#x27;:&#x27;ui-monospace, SFMono-Regular, Menlo, monospace&#x27;,&#x27;fontSize&#x27;:&#x27;12.5px&#x27;,&#x27;primaryColor&#x27;:&#x27;#eef2f6&#x27;,&#x27;primaryBorderColor&#x27;:&#x27;#8ba0b3&#x27;,&#x27;primaryTextColor&#x27;:&#x27;#17222e&#x27;,&#x27;secondaryColor&#x27;:&#x27;#e7edf3&#x27;,&#x27;tertiaryColor&#x27;:&#x27;#f2f5f8&#x27;,&#x27;lineColor&#x27;:&#x27;#7d93a6&#x27;,&#x27;clusterBkg&#x27;:&#x27;#f5f8fb&#x27;,&#x27;clusterBorder&#x27;:&#x27;#c3d0dc&#x27;,&#x27;edgeLabelBackground&#x27;:&#x27;#ffffff&#x27;}}}%%
+flowchart LR
+	Client[Client]
+	App[Lambda/API Handler]
+	Cache[(Cache)]
+	Db[(Database)]
+
+	Client --&gt; App
+	App --&gt; Cache
+	Cache --&gt; App
+	App --&gt; Db
+	Db --&gt; App
+	App --&gt; Client</pre></div>
+</article>
+<article class="card t-Easy" data-tier="Easy" data-search="claim check claim check stores large payloads outside the queue and sends only a lightweight reference in the message. in aws, the payload usually goes to s3 while sqs carries the s3 key. keep large payloads out of the queue messaging &amp; events s3 sqs">
+<div class="card-head">
+  <div class="card-meta">
+    <span class="num">03</span>
+    <span class="tier">Easy</span>
+    <span class="family">Messaging &amp; Events</span>
+  </div>
+  <h3>Claim Check</h3>
+  <p class="desc">Claim Check stores large payloads outside the queue and sends only a lightweight reference in the message. In AWS, the payload usually goes to S3 while SQS carries the S3 key.</p>
+</div>
+<div class="services"><span class="svc">S3</span><span class="svc">SQS</span></div>
+<div class="use-row"><span class="k">Use&nbsp;it&nbsp;to</span><span class="v">Keep large payloads out of the queue</span></div>
+<div class="diagram"><pre class="mermaid">%%{init: {&#x27;theme&#x27;:&#x27;base&#x27;,&#x27;themeVariables&#x27;:{&#x27;fontFamily&#x27;:&#x27;ui-monospace, SFMono-Regular, Menlo, monospace&#x27;,&#x27;fontSize&#x27;:&#x27;12.5px&#x27;,&#x27;primaryColor&#x27;:&#x27;#eef2f6&#x27;,&#x27;primaryBorderColor&#x27;:&#x27;#8ba0b3&#x27;,&#x27;primaryTextColor&#x27;:&#x27;#17222e&#x27;,&#x27;secondaryColor&#x27;:&#x27;#e7edf3&#x27;,&#x27;tertiaryColor&#x27;:&#x27;#f2f5f8&#x27;,&#x27;lineColor&#x27;:&#x27;#7d93a6&#x27;,&#x27;clusterBkg&#x27;:&#x27;#f5f8fb&#x27;,&#x27;clusterBorder&#x27;:&#x27;#c3d0dc&#x27;,&#x27;edgeLabelBackground&#x27;:&#x27;#ffffff&#x27;}}}%%
+flowchart LR
+	Producer[Python Producer]
+	Bucket[S3 Bucket]
+	Queue[SQS Queue]
+	Consumer[Lambda Consumer]
+
+	Producer --&gt; Bucket
+	Producer --&gt; Queue
+	Queue --&gt; Consumer
+	Consumer --&gt; Bucket</pre></div>
+</article>
+<article class="card t-Easy" data-tier="Easy" data-search="dlq + redrive dlq + redrive is the pattern for isolating poison messages from normal traffic. a primary sqs queue handles the main workload, and a dead-letter queue captures messages that keep failing after a configured number of retries. capture failed messages and retry them later messaging &amp; events sqs dead-letter queue">
+<div class="card-head">
+  <div class="card-meta">
+    <span class="num">04</span>
+    <span class="tier">Easy</span>
+    <span class="family">Messaging &amp; Events</span>
+  </div>
+  <h3>DLQ + Redrive</h3>
+  <p class="desc">DLQ + Redrive is the pattern for isolating poison messages from normal traffic. A primary SQS queue handles the main workload, and a dead-letter queue captures messages that keep failing after a configured number of retries.</p>
+</div>
+<div class="services"><span class="svc">SQS</span><span class="svc">Dead-Letter Queue</span></div>
+<div class="use-row"><span class="k">Use&nbsp;it&nbsp;to</span><span class="v">Capture failed messages and retry them later</span></div>
+<div class="diagram"><pre class="mermaid">%%{init: {&#x27;theme&#x27;:&#x27;base&#x27;,&#x27;themeVariables&#x27;:{&#x27;fontFamily&#x27;:&#x27;ui-monospace, SFMono-Regular, Menlo, monospace&#x27;,&#x27;fontSize&#x27;:&#x27;12.5px&#x27;,&#x27;primaryColor&#x27;:&#x27;#eef2f6&#x27;,&#x27;primaryBorderColor&#x27;:&#x27;#8ba0b3&#x27;,&#x27;primaryTextColor&#x27;:&#x27;#17222e&#x27;,&#x27;secondaryColor&#x27;:&#x27;#e7edf3&#x27;,&#x27;tertiaryColor&#x27;:&#x27;#f2f5f8&#x27;,&#x27;lineColor&#x27;:&#x27;#7d93a6&#x27;,&#x27;clusterBkg&#x27;:&#x27;#f5f8fb&#x27;,&#x27;clusterBorder&#x27;:&#x27;#c3d0dc&#x27;,&#x27;edgeLabelBackground&#x27;:&#x27;#ffffff&#x27;}}}%%
+flowchart LR
+	Producer[Python Producer]
+	Queue[SQS Main Queue]
+	Consumer[Lambda Consumer]
+	DLQ[SQS Dead-Letter Queue]
+
+	Producer --&gt; Queue
+	Queue --&gt; Consumer
+	Consumer -- repeated failure --&gt; DLQ
+	DLQ -- redrive after fix --&gt; Queue</pre></div>
+</article>
+<article class="card t-Easy" data-tier="Easy" data-search="event-driven file processing event-driven file processing reacts to file uploads automatically. in aws, an object lands in s3 and triggers downstream processing without polling. process a file the moment it lands messaging &amp; events s3 eventbridge lambda">
+<div class="card-head">
+  <div class="card-meta">
+    <span class="num">05</span>
+    <span class="tier">Easy</span>
+    <span class="family">Messaging &amp; Events</span>
+  </div>
+  <h3>Event-Driven File Processing</h3>
+  <p class="desc">Event-Driven File Processing reacts to file uploads automatically. In AWS, an object lands in S3 and triggers downstream processing without polling.</p>
+</div>
+<div class="services"><span class="svc">S3</span><span class="svc">EventBridge</span><span class="svc">Lambda</span></div>
+<div class="use-row"><span class="k">Use&nbsp;it&nbsp;to</span><span class="v">Process a file the moment it lands</span></div>
+<div class="diagram"><pre class="mermaid">%%{init: {&#x27;theme&#x27;:&#x27;base&#x27;,&#x27;themeVariables&#x27;:{&#x27;fontFamily&#x27;:&#x27;ui-monospace, SFMono-Regular, Menlo, monospace&#x27;,&#x27;fontSize&#x27;:&#x27;12.5px&#x27;,&#x27;primaryColor&#x27;:&#x27;#eef2f6&#x27;,&#x27;primaryBorderColor&#x27;:&#x27;#8ba0b3&#x27;,&#x27;primaryTextColor&#x27;:&#x27;#17222e&#x27;,&#x27;secondaryColor&#x27;:&#x27;#e7edf3&#x27;,&#x27;tertiaryColor&#x27;:&#x27;#f2f5f8&#x27;,&#x27;lineColor&#x27;:&#x27;#7d93a6&#x27;,&#x27;clusterBkg&#x27;:&#x27;#f5f8fb&#x27;,&#x27;clusterBorder&#x27;:&#x27;#c3d0dc&#x27;,&#x27;edgeLabelBackground&#x27;:&#x27;#ffffff&#x27;}}}%%
+flowchart LR
+	Producer[Uploader]
+	Bucket[S3 Bucket]
+	Consumer[Lambda Processor]
+
+	Producer --&gt; Bucket
+	Bucket --&gt; Consumer</pre></div>
+</article>
+<article class="card t-Easy" data-tier="Easy" data-search="fan-out fan-out is a publish-once, process-many pattern. one producer sends a single event to an sns topic, and that topic forwards the message to multiple sqs queues so each consumer can process the event independently. broadcast one event to many consumers messaging &amp; events sns sqs lambda">
+<div class="card-head">
+  <div class="card-meta">
+    <span class="num">06</span>
+    <span class="tier">Easy</span>
+    <span class="family">Messaging &amp; Events</span>
+  </div>
+  <h3>Fan-Out</h3>
+  <p class="desc">Fan-Out is a publish-once, process-many pattern. One producer sends a single event to an SNS topic, and that topic forwards the message to multiple SQS queues so each consumer can process the event independently.</p>
+</div>
+<div class="services"><span class="svc">SNS</span><span class="svc">SQS</span><span class="svc">Lambda</span></div>
+<div class="use-row"><span class="k">Use&nbsp;it&nbsp;to</span><span class="v">Broadcast one event to many consumers</span></div>
+<div class="diagram"><pre class="mermaid">%%{init: {&#x27;theme&#x27;:&#x27;base&#x27;,&#x27;themeVariables&#x27;:{&#x27;fontFamily&#x27;:&#x27;ui-monospace, SFMono-Regular, Menlo, monospace&#x27;,&#x27;fontSize&#x27;:&#x27;12.5px&#x27;,&#x27;primaryColor&#x27;:&#x27;#eef2f6&#x27;,&#x27;primaryBorderColor&#x27;:&#x27;#8ba0b3&#x27;,&#x27;primaryTextColor&#x27;:&#x27;#17222e&#x27;,&#x27;secondaryColor&#x27;:&#x27;#e7edf3&#x27;,&#x27;tertiaryColor&#x27;:&#x27;#f2f5f8&#x27;,&#x27;lineColor&#x27;:&#x27;#7d93a6&#x27;,&#x27;clusterBkg&#x27;:&#x27;#f5f8fb&#x27;,&#x27;clusterBorder&#x27;:&#x27;#c3d0dc&#x27;,&#x27;edgeLabelBackground&#x27;:&#x27;#ffffff&#x27;}}}%%
+flowchart LR
+	Producer[Python Producer]
+	Topic[SNS Topic]
+	QueueA[SQS Queue A]
+	QueueB[SQS Queue B]
+	ConsumerA[Lambda Consumer A]
+	ConsumerB[Lambda Consumer B]
+
+	Producer --&gt; Topic
+	Topic --&gt; QueueA
+	Topic --&gt; QueueB
+	QueueA --&gt; ConsumerA
+	QueueB --&gt; ConsumerB</pre></div>
+</article>
+<article class="card t-Easy" data-tier="Easy" data-search="idempotency via conditional writes idempotency via conditional writes prevents duplicate processing by storing a record of work that has already been handled. a consumer writes a processing marker to dynamodb with a conditional expression, and only the first write succeeds. make duplicate processing a no-op data &amp; storage dynamodb">
+<div class="card-head">
+  <div class="card-meta">
+    <span class="num">07</span>
+    <span class="tier">Easy</span>
+    <span class="family">Data &amp; Storage</span>
+  </div>
+  <h3>Idempotency via Conditional Writes</h3>
+  <p class="desc">Idempotency via Conditional Writes prevents duplicate processing by storing a record of work that has already been handled. A consumer writes a processing marker to DynamoDB with a conditional expression, and only the first write succeeds.</p>
+</div>
+<div class="services"><span class="svc">DynamoDB</span></div>
+<div class="use-row"><span class="k">Use&nbsp;it&nbsp;to</span><span class="v">Make duplicate processing a no-op</span></div>
+<div class="diagram"><pre class="mermaid">%%{init: {&#x27;theme&#x27;:&#x27;base&#x27;,&#x27;themeVariables&#x27;:{&#x27;fontFamily&#x27;:&#x27;ui-monospace, SFMono-Regular, Menlo, monospace&#x27;,&#x27;fontSize&#x27;:&#x27;12.5px&#x27;,&#x27;primaryColor&#x27;:&#x27;#eef2f6&#x27;,&#x27;primaryBorderColor&#x27;:&#x27;#8ba0b3&#x27;,&#x27;primaryTextColor&#x27;:&#x27;#17222e&#x27;,&#x27;secondaryColor&#x27;:&#x27;#e7edf3&#x27;,&#x27;tertiaryColor&#x27;:&#x27;#f2f5f8&#x27;,&#x27;lineColor&#x27;:&#x27;#7d93a6&#x27;,&#x27;clusterBkg&#x27;:&#x27;#f5f8fb&#x27;,&#x27;clusterBorder&#x27;:&#x27;#c3d0dc&#x27;,&#x27;edgeLabelBackground&#x27;:&#x27;#ffffff&#x27;}}}%%
+flowchart LR
+	Producer[Python Producer]
+	Consumer[Lambda Consumer]
+	Table[DynamoDB Idempotency Table]
+
+	Producer --&gt; Consumer
+	Consumer --&gt; Table
+	Table --&gt; Consumer</pre></div>
+</article>
+<article class="card t-Easy" data-tier="Easy" data-search="pipes and filters pipes and filters decomposes processing into small, independent steps. each filter performs one transformation, and pipes carry the message from one step to the next. apply a sequence of small transforms messaging &amp; events lambda sqs">
+<div class="card-head">
+  <div class="card-meta">
+    <span class="num">08</span>
+    <span class="tier">Easy</span>
+    <span class="family">Messaging &amp; Events</span>
+  </div>
+  <h3>Pipes and Filters</h3>
+  <p class="desc">Pipes and Filters decomposes processing into small, independent steps. Each filter performs one transformation, and pipes carry the message from one step to the next.</p>
+</div>
+<div class="services"><span class="svc">Lambda</span><span class="svc">SQS</span></div>
+<div class="use-row"><span class="k">Use&nbsp;it&nbsp;to</span><span class="v">Apply a sequence of small transforms</span></div>
+<div class="diagram"><pre class="mermaid">%%{init: {&#x27;theme&#x27;:&#x27;base&#x27;,&#x27;themeVariables&#x27;:{&#x27;fontFamily&#x27;:&#x27;ui-monospace, SFMono-Regular, Menlo, monospace&#x27;,&#x27;fontSize&#x27;:&#x27;12.5px&#x27;,&#x27;primaryColor&#x27;:&#x27;#eef2f6&#x27;,&#x27;primaryBorderColor&#x27;:&#x27;#8ba0b3&#x27;,&#x27;primaryTextColor&#x27;:&#x27;#17222e&#x27;,&#x27;secondaryColor&#x27;:&#x27;#e7edf3&#x27;,&#x27;tertiaryColor&#x27;:&#x27;#f2f5f8&#x27;,&#x27;lineColor&#x27;:&#x27;#7d93a6&#x27;,&#x27;clusterBkg&#x27;:&#x27;#f5f8fb&#x27;,&#x27;clusterBorder&#x27;:&#x27;#c3d0dc&#x27;,&#x27;edgeLabelBackground&#x27;:&#x27;#ffffff&#x27;}}}%%
+flowchart LR
+	Producer[Producer]
+	Q1[SQS Pipe 1]
+	F1[Lambda Filter 1]
+	Q2[SQS Pipe 2]
+	F2[Lambda Filter 2]
+	Q3[SQS Pipe 3]
+	F3[Lambda Filter 3]
+
+	Producer --&gt; Q1
+	Q1 --&gt; F1
+	F1 --&gt; Q2
+	Q2 --&gt; F2
+	F2 --&gt; Q3
+	Q3 --&gt; F3</pre></div>
+</article>
+<article class="card t-Easy" data-tier="Easy" data-search="queue-based load leveling queue-based load leveling smooths traffic bursts by placing sqs between the producer and the consumer. the producer writes quickly, the queue absorbs spikes, and the consumer processes messages at a steady pace. buffer bursts to protect slow consumers messaging &amp; events sqs lambda">
+<div class="card-head">
+  <div class="card-meta">
+    <span class="num">09</span>
+    <span class="tier">Easy</span>
+    <span class="family">Messaging &amp; Events</span>
+  </div>
+  <h3>Queue-Based Load Leveling</h3>
+  <p class="desc">Queue-Based Load Leveling smooths traffic bursts by placing SQS between the producer and the consumer. The producer writes quickly, the queue absorbs spikes, and the consumer processes messages at a steady pace.</p>
+</div>
+<div class="services"><span class="svc">SQS</span><span class="svc">Lambda</span></div>
+<div class="use-row"><span class="k">Use&nbsp;it&nbsp;to</span><span class="v">Buffer bursts to protect slow consumers</span></div>
+<div class="diagram"><pre class="mermaid">%%{init: {&#x27;theme&#x27;:&#x27;base&#x27;,&#x27;themeVariables&#x27;:{&#x27;fontFamily&#x27;:&#x27;ui-monospace, SFMono-Regular, Menlo, monospace&#x27;,&#x27;fontSize&#x27;:&#x27;12.5px&#x27;,&#x27;primaryColor&#x27;:&#x27;#eef2f6&#x27;,&#x27;primaryBorderColor&#x27;:&#x27;#8ba0b3&#x27;,&#x27;primaryTextColor&#x27;:&#x27;#17222e&#x27;,&#x27;secondaryColor&#x27;:&#x27;#e7edf3&#x27;,&#x27;tertiaryColor&#x27;:&#x27;#f2f5f8&#x27;,&#x27;lineColor&#x27;:&#x27;#7d93a6&#x27;,&#x27;clusterBkg&#x27;:&#x27;#f5f8fb&#x27;,&#x27;clusterBorder&#x27;:&#x27;#c3d0dc&#x27;,&#x27;edgeLabelBackground&#x27;:&#x27;#ffffff&#x27;}}}%%
+flowchart LR
+	Producer[Python Producer]
+	Queue[SQS Queue]
+	Consumer[Lambda Consumer]
+
+	Producer --&gt; Queue
+	Queue --&gt; Consumer</pre></div>
+</article>
+<article class="card t-Easy" data-tier="Easy" data-search="scheduled batch scheduled batch runs work on a fixed schedule instead of reacting to every request immediately. in aws, eventbridge scheduler (or eventbridge rules) triggers a lambda at a cadence such as every 5 minutes or once per night. run jobs on a schedule orchestration eventbridge scheduler lambda batch">
+<div class="card-head">
+  <div class="card-meta">
+    <span class="num">10</span>
+    <span class="tier">Easy</span>
+    <span class="family">Orchestration</span>
+  </div>
+  <h3>Scheduled Batch</h3>
+  <p class="desc">Scheduled Batch runs work on a fixed schedule instead of reacting to every request immediately. In AWS, EventBridge Scheduler (or EventBridge rules) triggers a Lambda at a cadence such as every 5 minutes or once per night.</p>
+</div>
+<div class="services"><span class="svc">EventBridge Scheduler</span><span class="svc">Lambda</span><span class="svc">Batch</span></div>
+<div class="use-row"><span class="k">Use&nbsp;it&nbsp;to</span><span class="v">Run jobs on a schedule</span></div>
+<div class="diagram"><pre class="mermaid">%%{init: {&#x27;theme&#x27;:&#x27;base&#x27;,&#x27;themeVariables&#x27;:{&#x27;fontFamily&#x27;:&#x27;ui-monospace, SFMono-Regular, Menlo, monospace&#x27;,&#x27;fontSize&#x27;:&#x27;12.5px&#x27;,&#x27;primaryColor&#x27;:&#x27;#eef2f6&#x27;,&#x27;primaryBorderColor&#x27;:&#x27;#8ba0b3&#x27;,&#x27;primaryTextColor&#x27;:&#x27;#17222e&#x27;,&#x27;secondaryColor&#x27;:&#x27;#e7edf3&#x27;,&#x27;tertiaryColor&#x27;:&#x27;#f2f5f8&#x27;,&#x27;lineColor&#x27;:&#x27;#7d93a6&#x27;,&#x27;clusterBkg&#x27;:&#x27;#f5f8fb&#x27;,&#x27;clusterBorder&#x27;:&#x27;#c3d0dc&#x27;,&#x27;edgeLabelBackground&#x27;:&#x27;#ffffff&#x27;}}}%%
+flowchart LR
+	Scheduler[EventBridge Schedule]
+	Worker[Lambda Batch Worker]
+	Store[(Data Source)]
+
+	Scheduler --&gt; Worker
+	Worker --&gt; Store</pre></div>
+</article>
+<article class="card t-Easy" data-tier="Easy" data-search="secrets config externalization secrets and config externalization keeps credentials and environment-specific settings out of application code. in aws, this is commonly done with secrets manager for sensitive values and systems manager parameter store for non-secret configuration. keep credentials and config out of code data &amp; storage secrets manager kms ssm">
+<div class="card-head">
+  <div class="card-meta">
+    <span class="num">11</span>
+    <span class="tier">Easy</span>
+    <span class="family">Data &amp; Storage</span>
+  </div>
+  <h3>Secrets Config Externalization</h3>
+  <p class="desc">Secrets and Config Externalization keeps credentials and environment-specific settings out of application code. In AWS, this is commonly done with Secrets Manager for sensitive values and Systems Manager Parameter Store for non-secret configuration.</p>
+</div>
+<div class="services"><span class="svc">Secrets Manager</span><span class="svc">KMS</span><span class="svc">SSM</span></div>
+<div class="use-row"><span class="k">Use&nbsp;it&nbsp;to</span><span class="v">Keep credentials and config out of code</span></div>
+<div class="diagram"><pre class="mermaid">%%{init: {&#x27;theme&#x27;:&#x27;base&#x27;,&#x27;themeVariables&#x27;:{&#x27;fontFamily&#x27;:&#x27;ui-monospace, SFMono-Regular, Menlo, monospace&#x27;,&#x27;fontSize&#x27;:&#x27;12.5px&#x27;,&#x27;primaryColor&#x27;:&#x27;#eef2f6&#x27;,&#x27;primaryBorderColor&#x27;:&#x27;#8ba0b3&#x27;,&#x27;primaryTextColor&#x27;:&#x27;#17222e&#x27;,&#x27;secondaryColor&#x27;:&#x27;#e7edf3&#x27;,&#x27;tertiaryColor&#x27;:&#x27;#f2f5f8&#x27;,&#x27;lineColor&#x27;:&#x27;#7d93a6&#x27;,&#x27;clusterBkg&#x27;:&#x27;#f5f8fb&#x27;,&#x27;clusterBorder&#x27;:&#x27;#c3d0dc&#x27;,&#x27;edgeLabelBackground&#x27;:&#x27;#ffffff&#x27;}}}%%
+flowchart LR
+	App[Lambda Application]
+	SM[Secrets Manager]
+	SSM[SSM Parameter Store]
+
+	App --&gt; SM
+	App --&gt; SSM</pre></div>
+</article>
+<article class="card t-Easy" data-tier="Easy" data-search="work queue / competing consumers work queue / competing consumers uses one sqs queue and multiple workers that pull from it independently. each message is processed by only one worker, so throughput increases as you add more consumers. scale out background processing safely messaging &amp; events sqs lambda ecs">
+<div class="card-head">
+  <div class="card-meta">
+    <span class="num">12</span>
+    <span class="tier">Easy</span>
+    <span class="family">Messaging &amp; Events</span>
+  </div>
+  <h3>Work Queue / Competing Consumers</h3>
+  <p class="desc">Work Queue / Competing Consumers uses one SQS queue and multiple workers that pull from it independently. Each message is processed by only one worker, so throughput increases as you add more consumers.</p>
+</div>
+<div class="services"><span class="svc">SQS</span><span class="svc">Lambda</span><span class="svc">ECS</span></div>
+<div class="use-row"><span class="k">Use&nbsp;it&nbsp;to</span><span class="v">Scale out background processing safely</span></div>
+<div class="diagram"><pre class="mermaid">%%{init: {&#x27;theme&#x27;:&#x27;base&#x27;,&#x27;themeVariables&#x27;:{&#x27;fontFamily&#x27;:&#x27;ui-monospace, SFMono-Regular, Menlo, monospace&#x27;,&#x27;fontSize&#x27;:&#x27;12.5px&#x27;,&#x27;primaryColor&#x27;:&#x27;#eef2f6&#x27;,&#x27;primaryBorderColor&#x27;:&#x27;#8ba0b3&#x27;,&#x27;primaryTextColor&#x27;:&#x27;#17222e&#x27;,&#x27;secondaryColor&#x27;:&#x27;#e7edf3&#x27;,&#x27;tertiaryColor&#x27;:&#x27;#f2f5f8&#x27;,&#x27;lineColor&#x27;:&#x27;#7d93a6&#x27;,&#x27;clusterBkg&#x27;:&#x27;#f5f8fb&#x27;,&#x27;clusterBorder&#x27;:&#x27;#c3d0dc&#x27;,&#x27;edgeLabelBackground&#x27;:&#x27;#ffffff&#x27;}}}%%
+flowchart LR
+	Producer[Python Producer]
+	Queue[SQS Queue]
+	WorkerA[Lambda Worker A]
+	WorkerB[Lambda Worker B]
+
+	Producer --&gt; Queue
+	Queue --&gt; WorkerA
+	Queue --&gt; WorkerB</pre></div>
+</article>
+<article class="card t-Medium" data-tier="Medium" data-search="cqrs read side search offloading cqrs read side / search offloading separates the write model from a read-optimized projection. writes update the source-of-truth model, and a separate read-side index or projection serves query-heavy or search-heavy traffic without burdening the transactional store. split write model from an optimized read model data &amp; storage dynamodb opensearch lambda">
+<div class="card-head">
+  <div class="card-meta">
+    <span class="num">13</span>
+    <span class="tier">Medium</span>
+    <span class="family">Data &amp; Storage</span>
+  </div>
+  <h3>CQRS Read Side Search Offloading</h3>
+  <p class="desc">CQRS Read Side / Search Offloading separates the write model from a read-optimized projection. Writes update the source-of-truth model, and a separate read-side index or projection serves query-heavy or search-heavy traffic without burdening the transactional store.</p>
+</div>
+<div class="services"><span class="svc">DynamoDB</span><span class="svc">OpenSearch</span><span class="svc">Lambda</span></div>
+<div class="use-row"><span class="k">Use&nbsp;it&nbsp;to</span><span class="v">Split write model from an optimized read model</span></div>
+<div class="diagram"><pre class="mermaid">%%{init: {&#x27;theme&#x27;:&#x27;base&#x27;,&#x27;themeVariables&#x27;:{&#x27;fontFamily&#x27;:&#x27;ui-monospace, SFMono-Regular, Menlo, monospace&#x27;,&#x27;fontSize&#x27;:&#x27;12.5px&#x27;,&#x27;primaryColor&#x27;:&#x27;#eef2f6&#x27;,&#x27;primaryBorderColor&#x27;:&#x27;#8ba0b3&#x27;,&#x27;primaryTextColor&#x27;:&#x27;#17222e&#x27;,&#x27;secondaryColor&#x27;:&#x27;#e7edf3&#x27;,&#x27;tertiaryColor&#x27;:&#x27;#f2f5f8&#x27;,&#x27;lineColor&#x27;:&#x27;#7d93a6&#x27;,&#x27;clusterBkg&#x27;:&#x27;#f5f8fb&#x27;,&#x27;clusterBorder&#x27;:&#x27;#c3d0dc&#x27;,&#x27;edgeLabelBackground&#x27;:&#x27;#ffffff&#x27;}}}%%
+flowchart LR
+		Writer[Write API or Event]
+		WriteModel[(Write Model)]
+		Projector[Projection Lambda]
+		ReadIndex[(Read Projection)]
+		Reader[Search API]
+
+		Writer --&gt; WriteModel
+		WriteModel --&gt; Projector
+		Projector --&gt; ReadIndex
+		Reader --&gt; ReadIndex</pre></div>
+</article>
+<article class="card t-Medium" data-tier="Medium" data-search="etl data lake etl / data lake moves raw data into centralized storage, transforms it into curated formats, and makes it available for analytics, reporting, or downstream machine workloads. the raw landing zone preserves original events, while curated outputs reshape the data for efficient querying. turn raw data into analytics-ready data data &amp; storage s3 glue athena">
+<div class="card-head">
+  <div class="card-meta">
+    <span class="num">14</span>
+    <span class="tier">Medium</span>
+    <span class="family">Data &amp; Storage</span>
+  </div>
+  <h3>ETL Data Lake</h3>
+  <p class="desc">ETL / Data Lake moves raw data into centralized storage, transforms it into curated formats, and makes it available for analytics, reporting, or downstream machine workloads. The raw landing zone preserves original events, while curated outputs reshape the data for efficient querying.</p>
+</div>
+<div class="services"><span class="svc">S3</span><span class="svc">Glue</span><span class="svc">Athena</span></div>
+<div class="use-row"><span class="k">Use&nbsp;it&nbsp;to</span><span class="v">Turn raw data into analytics-ready data</span></div>
+<div class="diagram"><pre class="mermaid">%%{init: {&#x27;theme&#x27;:&#x27;base&#x27;,&#x27;themeVariables&#x27;:{&#x27;fontFamily&#x27;:&#x27;ui-monospace, SFMono-Regular, Menlo, monospace&#x27;,&#x27;fontSize&#x27;:&#x27;12.5px&#x27;,&#x27;primaryColor&#x27;:&#x27;#eef2f6&#x27;,&#x27;primaryBorderColor&#x27;:&#x27;#8ba0b3&#x27;,&#x27;primaryTextColor&#x27;:&#x27;#17222e&#x27;,&#x27;secondaryColor&#x27;:&#x27;#e7edf3&#x27;,&#x27;tertiaryColor&#x27;:&#x27;#f2f5f8&#x27;,&#x27;lineColor&#x27;:&#x27;#7d93a6&#x27;,&#x27;clusterBkg&#x27;:&#x27;#f5f8fb&#x27;,&#x27;clusterBorder&#x27;:&#x27;#c3d0dc&#x27;,&#x27;edgeLabelBackground&#x27;:&#x27;#ffffff&#x27;}}}%%
+flowchart LR
+		Source[Raw Source Data]
+		Raw[S3 Raw Bucket]
+		ETL[ETL Processor]
+		Curated[S3 Curated Bucket]
+		Analytics[Analytics Consumers]
+
+		Source --&gt; Raw
+		Raw --&gt; ETL
+		ETL --&gt; Curated
+		Curated --&gt; Analytics</pre></div>
+</article>
+<article class="card t-Medium" data-tier="Medium" data-search="event bus choreography event bus choreography is a decentralized event-driven pattern where services react to business events without a central orchestrator controlling each step. a producer publishes an event once, and independent consumers subscribe to the event type they care about. let services react to events, no central brain messaging &amp; events eventbridge lambda">
+<div class="card-head">
+  <div class="card-meta">
+    <span class="num">15</span>
+    <span class="tier">Medium</span>
+    <span class="family">Messaging &amp; Events</span>
+  </div>
+  <h3>Event Bus Choreography</h3>
+  <p class="desc">Event Bus Choreography is a decentralized event-driven pattern where services react to business events without a central orchestrator controlling each step. A producer publishes an event once, and independent consumers subscribe to the event type they care about.</p>
+</div>
+<div class="services"><span class="svc">EventBridge</span><span class="svc">Lambda</span></div>
+<div class="use-row"><span class="k">Use&nbsp;it&nbsp;to</span><span class="v">Let services react to events, no central brain</span></div>
+<div class="diagram"><pre class="mermaid">%%{init: {&#x27;theme&#x27;:&#x27;base&#x27;,&#x27;themeVariables&#x27;:{&#x27;fontFamily&#x27;:&#x27;ui-monospace, SFMono-Regular, Menlo, monospace&#x27;,&#x27;fontSize&#x27;:&#x27;12.5px&#x27;,&#x27;primaryColor&#x27;:&#x27;#eef2f6&#x27;,&#x27;primaryBorderColor&#x27;:&#x27;#8ba0b3&#x27;,&#x27;primaryTextColor&#x27;:&#x27;#17222e&#x27;,&#x27;secondaryColor&#x27;:&#x27;#e7edf3&#x27;,&#x27;tertiaryColor&#x27;:&#x27;#f2f5f8&#x27;,&#x27;lineColor&#x27;:&#x27;#7d93a6&#x27;,&#x27;clusterBkg&#x27;:&#x27;#f5f8fb&#x27;,&#x27;clusterBorder&#x27;:&#x27;#c3d0dc&#x27;,&#x27;edgeLabelBackground&#x27;:&#x27;#ffffff&#x27;}}}%%
+flowchart LR
+		Producer[Order Service]
+		Bus[EventBridge Custom Bus]
+		Inventory[Inventory Lambda]
+		Billing[Billing Lambda]
+		Notify[Notification Lambda]
+
+		Producer --&gt; Bus
+		Bus --&gt; Inventory
+		Bus --&gt; Billing
+		Bus --&gt; Notify</pre></div>
+</article>
+<article class="card t-Medium" data-tier="Medium" data-search="orchestrator workflow orchestrator workflow centralizes multi-step business flow in one workflow engine. a controller (typically step functions) invokes each step in order, applies retries and branching rules, and decides whether to continue, fail, or compensate. coordinate multi-step work with retries orchestration step functions lambda">
+<div class="card-head">
+  <div class="card-meta">
+    <span class="num">16</span>
+    <span class="tier">Medium</span>
+    <span class="family">Orchestration</span>
+  </div>
+  <h3>Orchestrator Workflow</h3>
+  <p class="desc">Orchestrator Workflow centralizes multi-step business flow in one workflow engine. A controller (typically Step Functions) invokes each step in order, applies retries and branching rules, and decides whether to continue, fail, or compensate.</p>
+</div>
+<div class="services"><span class="svc">Step Functions</span><span class="svc">Lambda</span></div>
+<div class="use-row"><span class="k">Use&nbsp;it&nbsp;to</span><span class="v">Coordinate multi-step work with retries</span></div>
+<div class="diagram"><pre class="mermaid">%%{init: {&#x27;theme&#x27;:&#x27;base&#x27;,&#x27;themeVariables&#x27;:{&#x27;fontFamily&#x27;:&#x27;ui-monospace, SFMono-Regular, Menlo, monospace&#x27;,&#x27;fontSize&#x27;:&#x27;12.5px&#x27;,&#x27;primaryColor&#x27;:&#x27;#eef2f6&#x27;,&#x27;primaryBorderColor&#x27;:&#x27;#8ba0b3&#x27;,&#x27;primaryTextColor&#x27;:&#x27;#17222e&#x27;,&#x27;secondaryColor&#x27;:&#x27;#e7edf3&#x27;,&#x27;tertiaryColor&#x27;:&#x27;#f2f5f8&#x27;,&#x27;lineColor&#x27;:&#x27;#7d93a6&#x27;,&#x27;clusterBkg&#x27;:&#x27;#f5f8fb&#x27;,&#x27;clusterBorder&#x27;:&#x27;#c3d0dc&#x27;,&#x27;edgeLabelBackground&#x27;:&#x27;#ffffff&#x27;}}}%%
+flowchart LR
+		Producer[Order Event Producer]
+		SFN[Step Functions Orchestrator]
+		V[Validate Lambda]
+		I[Reserve Inventory Lambda]
+		P[Charge Payment Lambda]
+		S[Ship Order Lambda]
+		F[Fail State]
+
+		Producer --&gt; SFN
+		SFN --&gt; V
+		V --&gt; I
+		I --&gt; P
+		P --&gt; S
+		V --&gt; F
+		I --&gt; F
+		P --&gt; F</pre></div>
+</article>
+<article class="card t-Medium" data-tier="Medium" data-search="private networking data tier private networking for data tier places databases and other sensitive data services on private network paths so they are reachable only from approved application tiers. the goal is to keep the data plane off the public internet and enforce access through subnet boundaries, security groups, and controlled endpoints. keep the data plane off the public internet data &amp; storage vpc rds vpc endpoints">
+<div class="card-head">
+  <div class="card-meta">
+    <span class="num">17</span>
+    <span class="tier">Medium</span>
+    <span class="family">Data &amp; Storage</span>
+  </div>
+  <h3>Private Networking Data Tier</h3>
+  <p class="desc">Private Networking for Data Tier places databases and other sensitive data services on private network paths so they are reachable only from approved application tiers. The goal is to keep the data plane off the public internet and enforce access through subnet boundaries, security groups, and controlled endpoints.</p>
+</div>
+<div class="services"><span class="svc">VPC</span><span class="svc">RDS</span><span class="svc">VPC Endpoints</span></div>
+<div class="use-row"><span class="k">Use&nbsp;it&nbsp;to</span><span class="v">Keep the data plane off the public internet</span></div>
+<div class="diagram"><pre class="mermaid">%%{init: {&#x27;theme&#x27;:&#x27;base&#x27;,&#x27;themeVariables&#x27;:{&#x27;fontFamily&#x27;:&#x27;ui-monospace, SFMono-Regular, Menlo, monospace&#x27;,&#x27;fontSize&#x27;:&#x27;12.5px&#x27;,&#x27;primaryColor&#x27;:&#x27;#eef2f6&#x27;,&#x27;primaryBorderColor&#x27;:&#x27;#8ba0b3&#x27;,&#x27;primaryTextColor&#x27;:&#x27;#17222e&#x27;,&#x27;secondaryColor&#x27;:&#x27;#e7edf3&#x27;,&#x27;tertiaryColor&#x27;:&#x27;#f2f5f8&#x27;,&#x27;lineColor&#x27;:&#x27;#7d93a6&#x27;,&#x27;clusterBkg&#x27;:&#x27;#f5f8fb&#x27;,&#x27;clusterBorder&#x27;:&#x27;#c3d0dc&#x27;,&#x27;edgeLabelBackground&#x27;:&#x27;#ffffff&#x27;}}}%%
+flowchart LR
+		Internet[Internet]
+		Public[Public Subnets]
+		App[Private App Subnets]
+		Data[Isolated Data Subnets]
+		DB[(RDS)]
+
+		Internet --&gt; Public
+		Public --&gt; App
+		App --&gt; Data
+		Data --&gt; DB</pre></div>
+</article>
+<article class="card t-Medium" data-tier="Medium" data-search="scatter gather scatter gather sends one request to multiple parallel workers, then combines the responses into one aggregated result. the scatter step fans work out concurrently, and the gather step waits for the branches that matter and merges their outputs. fan work out, then aggregate the results messaging &amp; events step functions map / parallel">
+<div class="card-head">
+  <div class="card-meta">
+    <span class="num">18</span>
+    <span class="tier">Medium</span>
+    <span class="family">Messaging &amp; Events</span>
+  </div>
+  <h3>Scatter Gather</h3>
+  <p class="desc">Scatter Gather sends one request to multiple parallel workers, then combines the responses into one aggregated result. The scatter step fans work out concurrently, and the gather step waits for the branches that matter and merges their outputs.</p>
+</div>
+<div class="services"><span class="svc">Step Functions</span><span class="svc">Map / Parallel</span></div>
+<div class="use-row"><span class="k">Use&nbsp;it&nbsp;to</span><span class="v">Fan work out, then aggregate the results</span></div>
+<div class="diagram"><pre class="mermaid">%%{init: {&#x27;theme&#x27;:&#x27;base&#x27;,&#x27;themeVariables&#x27;:{&#x27;fontFamily&#x27;:&#x27;ui-monospace, SFMono-Regular, Menlo, monospace&#x27;,&#x27;fontSize&#x27;:&#x27;12.5px&#x27;,&#x27;primaryColor&#x27;:&#x27;#eef2f6&#x27;,&#x27;primaryBorderColor&#x27;:&#x27;#8ba0b3&#x27;,&#x27;primaryTextColor&#x27;:&#x27;#17222e&#x27;,&#x27;secondaryColor&#x27;:&#x27;#e7edf3&#x27;,&#x27;tertiaryColor&#x27;:&#x27;#f2f5f8&#x27;,&#x27;lineColor&#x27;:&#x27;#7d93a6&#x27;,&#x27;clusterBkg&#x27;:&#x27;#f5f8fb&#x27;,&#x27;clusterBorder&#x27;:&#x27;#c3d0dc&#x27;,&#x27;edgeLabelBackground&#x27;:&#x27;#ffffff&#x27;}}}%%
+flowchart LR
+		Client[Client Request]
+		SFN[Step Functions Parallel State]
+		C[Catalog Lambda]
+		R[Reviews Lambda]
+		P[Pricing Lambda]
+		G[Gather Lambda]
+
+		Client --&gt; SFN
+		SFN --&gt; C
+		SFN --&gt; R
+		SFN --&gt; P
+		C --&gt; G
+		R --&gt; G
+		P --&gt; G</pre></div>
+</article>
+<article class="card t-Medium" data-tier="Medium" data-search="strangler facade at the edge strangler at the edge incrementally routes traffic from a legacy backend to new services behind a facade, allowing migration without big-bang rewrite. replace a legacy system route by route api &amp; edge route 53 alb">
+<div class="card-head">
+  <div class="card-meta">
+    <span class="num">19</span>
+    <span class="tier">Medium</span>
+    <span class="family">API &amp; Edge</span>
+  </div>
+  <h3>Strangler Facade at the Edge</h3>
+  <p class="desc">Strangler at the edge incrementally routes traffic from a legacy backend to new services behind a facade, allowing migration without big-bang rewrite.</p>
+</div>
+<div class="services"><span class="svc">Route 53</span><span class="svc">ALB</span></div>
+<div class="use-row"><span class="k">Use&nbsp;it&nbsp;to</span><span class="v">Replace a legacy system route by route</span></div>
+<div class="diagram"><pre class="mermaid">%%{init: {&#x27;theme&#x27;:&#x27;base&#x27;,&#x27;themeVariables&#x27;:{&#x27;fontFamily&#x27;:&#x27;ui-monospace, SFMono-Regular, Menlo, monospace&#x27;,&#x27;fontSize&#x27;:&#x27;12.5px&#x27;,&#x27;primaryColor&#x27;:&#x27;#eef2f6&#x27;,&#x27;primaryBorderColor&#x27;:&#x27;#8ba0b3&#x27;,&#x27;primaryTextColor&#x27;:&#x27;#17222e&#x27;,&#x27;secondaryColor&#x27;:&#x27;#e7edf3&#x27;,&#x27;tertiaryColor&#x27;:&#x27;#f2f5f8&#x27;,&#x27;lineColor&#x27;:&#x27;#7d93a6&#x27;,&#x27;clusterBkg&#x27;:&#x27;#f5f8fb&#x27;,&#x27;clusterBorder&#x27;:&#x27;#c3d0dc&#x27;,&#x27;edgeLabelBackground&#x27;:&#x27;#ffffff&#x27;}}}%%
+flowchart LR
+    Client --&gt; Edge[API Gateway / ALB Facade]
+    Edge --&gt; Legacy[Legacy App]
+    Edge --&gt; NewSvc[New Service]</pre></div>
+</article>
+<article class="card t-Medium" data-tier="Medium" data-search="streaming ingestion streaming ingestion continuously accepts event data as it is produced and processes it in near real time. instead of waiting for scheduled batches or individual request/response cycles, events flow through a stream where consumers read ordered records in batches or shards. process continuous event streams messaging &amp; events kinesis lambda">
+<div class="card-head">
+  <div class="card-meta">
+    <span class="num">20</span>
+    <span class="tier">Medium</span>
+    <span class="family">Messaging &amp; Events</span>
+  </div>
+  <h3>Streaming Ingestion</h3>
+  <p class="desc">Streaming Ingestion continuously accepts event data as it is produced and processes it in near real time. Instead of waiting for scheduled batches or individual request/response cycles, events flow through a stream where consumers read ordered records in batches or shards.</p>
+</div>
+<div class="services"><span class="svc">Kinesis</span><span class="svc">Lambda</span></div>
+<div class="use-row"><span class="k">Use&nbsp;it&nbsp;to</span><span class="v">Process continuous event streams</span></div>
+<div class="diagram"><pre class="mermaid">%%{init: {&#x27;theme&#x27;:&#x27;base&#x27;,&#x27;themeVariables&#x27;:{&#x27;fontFamily&#x27;:&#x27;ui-monospace, SFMono-Regular, Menlo, monospace&#x27;,&#x27;fontSize&#x27;:&#x27;12.5px&#x27;,&#x27;primaryColor&#x27;:&#x27;#eef2f6&#x27;,&#x27;primaryBorderColor&#x27;:&#x27;#8ba0b3&#x27;,&#x27;primaryTextColor&#x27;:&#x27;#17222e&#x27;,&#x27;secondaryColor&#x27;:&#x27;#e7edf3&#x27;,&#x27;tertiaryColor&#x27;:&#x27;#f2f5f8&#x27;,&#x27;lineColor&#x27;:&#x27;#7d93a6&#x27;,&#x27;clusterBkg&#x27;:&#x27;#f5f8fb&#x27;,&#x27;clusterBorder&#x27;:&#x27;#c3d0dc&#x27;,&#x27;edgeLabelBackground&#x27;:&#x27;#ffffff&#x27;}}}%%
+flowchart LR
+		Producer[Event Producer]
+		Stream[Kinesis Data Stream]
+		Consumer[Lambda Stream Processor]
+		Metrics[Aggregated Output]
+
+		Producer --&gt; Stream
+		Stream --&gt; Consumer
+		Consumer --&gt; Metrics</pre></div>
+</article>
+<article class="card t-Complex" data-tier="Complex" data-search="blue green deployment blue/green deployment runs two production-like environments: current (blue) and new (green). traffic stays on blue until green is validated, then cutover switches traffic to green with fast rollback available by switching back. cut over releases with instant rollback deployment codedeploy lambda alias alb">
+<div class="card-head">
+  <div class="card-meta">
+    <span class="num">21</span>
+    <span class="tier">Complex</span>
+    <span class="family">Deployment</span>
+  </div>
+  <h3>Blue Green Deployment</h3>
+  <p class="desc">Blue/Green Deployment runs two production-like environments: current (blue) and new (green). Traffic stays on blue until green is validated, then cutover switches traffic to green with fast rollback available by switching back.</p>
+</div>
+<div class="services"><span class="svc">CodeDeploy</span><span class="svc">Lambda Alias</span><span class="svc">ALB</span></div>
+<div class="use-row"><span class="k">Use&nbsp;it&nbsp;to</span><span class="v">Cut over releases with instant rollback</span></div>
+<div class="diagram"><pre class="mermaid">%%{init: {&#x27;theme&#x27;:&#x27;base&#x27;,&#x27;themeVariables&#x27;:{&#x27;fontFamily&#x27;:&#x27;ui-monospace, SFMono-Regular, Menlo, monospace&#x27;,&#x27;fontSize&#x27;:&#x27;12.5px&#x27;,&#x27;primaryColor&#x27;:&#x27;#eef2f6&#x27;,&#x27;primaryBorderColor&#x27;:&#x27;#8ba0b3&#x27;,&#x27;primaryTextColor&#x27;:&#x27;#17222e&#x27;,&#x27;secondaryColor&#x27;:&#x27;#e7edf3&#x27;,&#x27;tertiaryColor&#x27;:&#x27;#f2f5f8&#x27;,&#x27;lineColor&#x27;:&#x27;#7d93a6&#x27;,&#x27;clusterBkg&#x27;:&#x27;#f5f8fb&#x27;,&#x27;clusterBorder&#x27;:&#x27;#c3d0dc&#x27;,&#x27;edgeLabelBackground&#x27;:&#x27;#ffffff&#x27;}}}%%
+flowchart LR
+		Users[Users] --&gt; ALB[Application Load Balancer]
+		ALB --&gt; Blue[Blue Target Group]
+		ALB --&gt; Green[Green Target Group]
+		CodeDeploy[CodeDeploy Deployment Group] --&gt; Green
+		CloudWatch[CloudWatch Alarms] --&gt; CodeDeploy
+		CodeDeploy --&gt; ALB</pre></div>
+</article>
+<article class="card t-Complex" data-tier="Complex" data-search="bulkhead bulkhead isolates resources so failure or overload in one workload slice does not consume capacity needed by others. the pattern is named after ship compartments: damage in one section should not sink the entire vessel. isolate workloads so one can&#x27;t sink the rest resilience sqs lambda concurrency ecs">
+<div class="card-head">
+  <div class="card-meta">
+    <span class="num">22</span>
+    <span class="tier">Complex</span>
+    <span class="family">Resilience</span>
+  </div>
+  <h3>Bulkhead</h3>
+  <p class="desc">Bulkhead isolates resources so failure or overload in one workload slice does not consume capacity needed by others. The pattern is named after ship compartments: damage in one section should not sink the entire vessel.</p>
+</div>
+<div class="services"><span class="svc">SQS</span><span class="svc">Lambda Concurrency</span><span class="svc">ECS</span></div>
+<div class="use-row"><span class="k">Use&nbsp;it&nbsp;to</span><span class="v">Isolate workloads so one can&#x27;t sink the rest</span></div>
+<div class="diagram"><pre class="mermaid">%%{init: {&#x27;theme&#x27;:&#x27;base&#x27;,&#x27;themeVariables&#x27;:{&#x27;fontFamily&#x27;:&#x27;ui-monospace, SFMono-Regular, Menlo, monospace&#x27;,&#x27;fontSize&#x27;:&#x27;12.5px&#x27;,&#x27;primaryColor&#x27;:&#x27;#eef2f6&#x27;,&#x27;primaryBorderColor&#x27;:&#x27;#8ba0b3&#x27;,&#x27;primaryTextColor&#x27;:&#x27;#17222e&#x27;,&#x27;secondaryColor&#x27;:&#x27;#e7edf3&#x27;,&#x27;tertiaryColor&#x27;:&#x27;#f2f5f8&#x27;,&#x27;lineColor&#x27;:&#x27;#7d93a6&#x27;,&#x27;clusterBkg&#x27;:&#x27;#f5f8fb&#x27;,&#x27;clusterBorder&#x27;:&#x27;#c3d0dc&#x27;,&#x27;edgeLabelBackground&#x27;:&#x27;#ffffff&#x27;}}}%%
+flowchart LR
+		Client[Clients] --&gt; Router[API Gateway / Router]
+		Router --&gt; Premium[Premium Pool]
+		Router --&gt; Standard[Standard Pool]
+		Premium --&gt; PremiumWorkers[Lambda / ECS Premium Workers]
+		Standard --&gt; StandardWorkers[Lambda / ECS Standard Workers]
+		PremiumWorkers --&gt; Metrics[CloudWatch Metrics]
+		StandardWorkers --&gt; Metrics</pre></div>
+</article>
+<article class="card t-Complex" data-tier="Complex" data-search="canary deployment canary deployment releases a new version to a small slice of traffic first, then gradually increases the percentage if metrics remain healthy. it reduces blast radius compared to full cutover and enables data-driven release decisions. shift a slice of traffic, then ramp up deployment codedeploy weighted alias cloudwatch">
+<div class="card-head">
+  <div class="card-meta">
+    <span class="num">23</span>
+    <span class="tier">Complex</span>
+    <span class="family">Deployment</span>
+  </div>
+  <h3>Canary Deployment</h3>
+  <p class="desc">Canary Deployment releases a new version to a small slice of traffic first, then gradually increases the percentage if metrics remain healthy. It reduces blast radius compared to full cutover and enables data-driven release decisions.</p>
+</div>
+<div class="services"><span class="svc">CodeDeploy</span><span class="svc">Weighted Alias</span><span class="svc">CloudWatch</span></div>
+<div class="use-row"><span class="k">Use&nbsp;it&nbsp;to</span><span class="v">Shift a slice of traffic, then ramp up</span></div>
+<div class="diagram"><pre class="mermaid">%%{init: {&#x27;theme&#x27;:&#x27;base&#x27;,&#x27;themeVariables&#x27;:{&#x27;fontFamily&#x27;:&#x27;ui-monospace, SFMono-Regular, Menlo, monospace&#x27;,&#x27;fontSize&#x27;:&#x27;12.5px&#x27;,&#x27;primaryColor&#x27;:&#x27;#eef2f6&#x27;,&#x27;primaryBorderColor&#x27;:&#x27;#8ba0b3&#x27;,&#x27;primaryTextColor&#x27;:&#x27;#17222e&#x27;,&#x27;secondaryColor&#x27;:&#x27;#e7edf3&#x27;,&#x27;tertiaryColor&#x27;:&#x27;#f2f5f8&#x27;,&#x27;lineColor&#x27;:&#x27;#7d93a6&#x27;,&#x27;clusterBkg&#x27;:&#x27;#f5f8fb&#x27;,&#x27;clusterBorder&#x27;:&#x27;#c3d0dc&#x27;,&#x27;edgeLabelBackground&#x27;:&#x27;#ffffff&#x27;}}}%%
+flowchart LR
+		Users[Users] --&gt; Router[Lambda Alias / Load Balancer]
+		Router --&gt; Stable[Stable Version]
+		Router --&gt; Canary[Canary Version]
+		Canary --&gt; Metrics[CloudWatch Alarms + Metrics]
+		Metrics --&gt; Deploy[CodeDeploy Controller]
+		Deploy --&gt; Router</pre></div>
+</article>
+<article class="card t-Complex" data-tier="Complex" data-search="change data capture data replication change data capture (cdc) / data replication captures changes from a source system and propagates them to downstream systems without requiring consumers to query the source directly. instead of doing periodic full copies, the system reacts to inserts, updates, and deletes as change events. replicate data changes to another store or region data &amp; storage dms kinesis debezium">
+<div class="card-head">
+  <div class="card-meta">
+    <span class="num">24</span>
+    <span class="tier">Complex</span>
+    <span class="family">Data &amp; Storage</span>
+  </div>
+  <h3>Change Data Capture Data Replication</h3>
+  <p class="desc">Change Data Capture (CDC) / Data Replication captures changes from a source system and propagates them to downstream systems without requiring consumers to query the source directly. Instead of doing periodic full copies, the system reacts to inserts, updates, and deletes as change events.</p>
+</div>
+<div class="services"><span class="svc">DMS</span><span class="svc">Kinesis</span><span class="svc">Debezium</span></div>
+<div class="use-row"><span class="k">Use&nbsp;it&nbsp;to</span><span class="v">Replicate data changes to another store or region</span></div>
+<div class="diagram"><pre class="mermaid">%%{init: {&#x27;theme&#x27;:&#x27;base&#x27;,&#x27;themeVariables&#x27;:{&#x27;fontFamily&#x27;:&#x27;ui-monospace, SFMono-Regular, Menlo, monospace&#x27;,&#x27;fontSize&#x27;:&#x27;12.5px&#x27;,&#x27;primaryColor&#x27;:&#x27;#eef2f6&#x27;,&#x27;primaryBorderColor&#x27;:&#x27;#8ba0b3&#x27;,&#x27;primaryTextColor&#x27;:&#x27;#17222e&#x27;,&#x27;secondaryColor&#x27;:&#x27;#e7edf3&#x27;,&#x27;tertiaryColor&#x27;:&#x27;#f2f5f8&#x27;,&#x27;lineColor&#x27;:&#x27;#7d93a6&#x27;,&#x27;clusterBkg&#x27;:&#x27;#f5f8fb&#x27;,&#x27;clusterBorder&#x27;:&#x27;#c3d0dc&#x27;,&#x27;edgeLabelBackground&#x27;:&#x27;#ffffff&#x27;}}}%%
+flowchart LR
+		Source[Source System]
+		ChangeFeed[Change Feed]
+		Capture[Capture Lambda]
+		Queue[Replication Queue]
+		Replicator[Replication Lambda]
+		Target[Target System]
+
+		Source --&gt; ChangeFeed
+		ChangeFeed --&gt; Capture
+		Capture --&gt; Queue
+		Queue --&gt; Replicator
+		Replicator --&gt; Target</pre></div>
+</article>
+<article class="card t-Complex" data-tier="Complex" data-search="circuit breaker circuit breaker prevents repeated calls to an unhealthy dependency by detecting failures and temporarily short-circuiting requests. it helps protect upstream services from cascading latency and allows downstream systems time to recover. fail fast and stop cascading failures resilience lambda dynamodb cloudwatch">
+<div class="card-head">
+  <div class="card-meta">
+    <span class="num">25</span>
+    <span class="tier">Complex</span>
+    <span class="family">Resilience</span>
+  </div>
+  <h3>Circuit Breaker</h3>
+  <p class="desc">Circuit Breaker prevents repeated calls to an unhealthy dependency by detecting failures and temporarily short-circuiting requests. It helps protect upstream services from cascading latency and allows downstream systems time to recover.</p>
+</div>
+<div class="services"><span class="svc">Lambda</span><span class="svc">DynamoDB</span><span class="svc">CloudWatch</span></div>
+<div class="use-row"><span class="k">Use&nbsp;it&nbsp;to</span><span class="v">Fail fast and stop cascading failures</span></div>
+<div class="diagram"><pre class="mermaid">%%{init: {&#x27;theme&#x27;:&#x27;base&#x27;,&#x27;themeVariables&#x27;:{&#x27;fontFamily&#x27;:&#x27;ui-monospace, SFMono-Regular, Menlo, monospace&#x27;,&#x27;fontSize&#x27;:&#x27;12.5px&#x27;,&#x27;primaryColor&#x27;:&#x27;#eef2f6&#x27;,&#x27;primaryBorderColor&#x27;:&#x27;#8ba0b3&#x27;,&#x27;primaryTextColor&#x27;:&#x27;#17222e&#x27;,&#x27;secondaryColor&#x27;:&#x27;#e7edf3&#x27;,&#x27;tertiaryColor&#x27;:&#x27;#f2f5f8&#x27;,&#x27;lineColor&#x27;:&#x27;#7d93a6&#x27;,&#x27;clusterBkg&#x27;:&#x27;#f5f8fb&#x27;,&#x27;clusterBorder&#x27;:&#x27;#c3d0dc&#x27;,&#x27;edgeLabelBackground&#x27;:&#x27;#ffffff&#x27;}}}%%
+flowchart LR
+		Client[Client] --&gt; API[API Gateway]
+		API --&gt; Handler[Lambda Handler]
+		Handler --&gt; Breaker[Circuit Breaker Logic]
+		Breaker --&gt; State[(DynamoDB Breaker State)]
+		Breaker --&gt;|closed/half-open| Downstream[Payment Service]
+		Breaker --&gt;|open| Fallback[Fast Fail / Fallback]
+		Downstream --&gt; Metrics[CloudWatch Metrics]
+		Fallback --&gt; Metrics</pre></div>
+</article>
+<article class="card t-Complex" data-tier="Complex" data-search="multi region failover multi-region failover keeps an application available during regional outages by routing traffic to a healthy secondary region when primary health checks fail. stay available when a region goes dark resilience route 53 global tables health checks">
+<div class="card-head">
+  <div class="card-meta">
+    <span class="num">26</span>
+    <span class="tier">Complex</span>
+    <span class="family">Resilience</span>
+  </div>
+  <h3>Multi Region Failover</h3>
+  <p class="desc">Multi-Region Failover keeps an application available during regional outages by routing traffic to a healthy secondary region when primary health checks fail.</p>
+</div>
+<div class="services"><span class="svc">Route 53</span><span class="svc">Global Tables</span><span class="svc">Health Checks</span></div>
+<div class="use-row"><span class="k">Use&nbsp;it&nbsp;to</span><span class="v">Stay available when a region goes dark</span></div>
+<div class="diagram"><pre class="mermaid">%%{init: {&#x27;theme&#x27;:&#x27;base&#x27;,&#x27;themeVariables&#x27;:{&#x27;fontFamily&#x27;:&#x27;ui-monospace, SFMono-Regular, Menlo, monospace&#x27;,&#x27;fontSize&#x27;:&#x27;12.5px&#x27;,&#x27;primaryColor&#x27;:&#x27;#eef2f6&#x27;,&#x27;primaryBorderColor&#x27;:&#x27;#8ba0b3&#x27;,&#x27;primaryTextColor&#x27;:&#x27;#17222e&#x27;,&#x27;secondaryColor&#x27;:&#x27;#e7edf3&#x27;,&#x27;tertiaryColor&#x27;:&#x27;#f2f5f8&#x27;,&#x27;lineColor&#x27;:&#x27;#7d93a6&#x27;,&#x27;clusterBkg&#x27;:&#x27;#f5f8fb&#x27;,&#x27;clusterBorder&#x27;:&#x27;#c3d0dc&#x27;,&#x27;edgeLabelBackground&#x27;:&#x27;#ffffff&#x27;}}}%%
+flowchart LR
+    Users --&gt; R53[Route 53 Failover Record]
+    R53 --&gt; Primary[Primary Region]
+    R53 --&gt; Secondary[Secondary Region]</pre></div>
+</article>
+<article class="card t-Complex" data-tier="Complex" data-search="rate limiting and throttling rate limiting and throttling control how fast requests are accepted and processed. the goal is to protect shared services, preserve fairness across clients, and keep costs and latency predictable under bursty traffic. protect downstream services and public apis api &amp; edge api gateway waf usage plans">
+<div class="card-head">
+  <div class="card-meta">
+    <span class="num">27</span>
+    <span class="tier">Complex</span>
+    <span class="family">API &amp; Edge</span>
+  </div>
+  <h3>Rate Limiting and Throttling</h3>
+  <p class="desc">Rate limiting and throttling control how fast requests are accepted and processed. The goal is to protect shared services, preserve fairness across clients, and keep costs and latency predictable under bursty traffic.</p>
+</div>
+<div class="services"><span class="svc">API Gateway</span><span class="svc">WAF</span><span class="svc">Usage Plans</span></div>
+<div class="use-row"><span class="k">Use&nbsp;it&nbsp;to</span><span class="v">Protect downstream services and public APIs</span></div>
+<div class="diagram"><pre class="mermaid">%%{init: {&#x27;theme&#x27;:&#x27;base&#x27;,&#x27;themeVariables&#x27;:{&#x27;fontFamily&#x27;:&#x27;ui-monospace, SFMono-Regular, Menlo, monospace&#x27;,&#x27;fontSize&#x27;:&#x27;12.5px&#x27;,&#x27;primaryColor&#x27;:&#x27;#eef2f6&#x27;,&#x27;primaryBorderColor&#x27;:&#x27;#8ba0b3&#x27;,&#x27;primaryTextColor&#x27;:&#x27;#17222e&#x27;,&#x27;secondaryColor&#x27;:&#x27;#e7edf3&#x27;,&#x27;tertiaryColor&#x27;:&#x27;#f2f5f8&#x27;,&#x27;lineColor&#x27;:&#x27;#7d93a6&#x27;,&#x27;clusterBkg&#x27;:&#x27;#f5f8fb&#x27;,&#x27;clusterBorder&#x27;:&#x27;#c3d0dc&#x27;,&#x27;edgeLabelBackground&#x27;:&#x27;#ffffff&#x27;}}}%%
+flowchart LR
+    Client[Client]
+    APIGW[API Gateway Usage Plan]
+    Lambda[Lambda Handler]
+    CW[CloudWatch Metrics and Alarms]
+
+    Client --&gt; APIGW
+    APIGW --&gt;|Allowed| Lambda
+    APIGW --&gt;|Throttled 429| Client
+    Lambda --&gt; CW
+    APIGW --&gt; CW</pre></div>
+</article>
+<article class="card t-Complex" data-tier="Complex" data-search="retry with backoff jitter retry with backoff jitter retries transient failures with increasing delay and randomization between attempts. the growing delay reduces pressure on a struggling dependency, and jitter prevents many clients from retrying at the exact same time. recover from transient failures without a storm resilience lambda aws sdk step functions">
+<div class="card-head">
+  <div class="card-meta">
+    <span class="num">28</span>
+    <span class="tier">Complex</span>
+    <span class="family">Resilience</span>
+  </div>
+  <h3>Retry with Backoff Jitter</h3>
+  <p class="desc">Retry with Backoff Jitter retries transient failures with increasing delay and randomization between attempts. The growing delay reduces pressure on a struggling dependency, and jitter prevents many clients from retrying at the exact same time.</p>
+</div>
+<div class="services"><span class="svc">Lambda</span><span class="svc">AWS SDK</span><span class="svc">Step Functions</span></div>
+<div class="use-row"><span class="k">Use&nbsp;it&nbsp;to</span><span class="v">Recover from transient failures without a storm</span></div>
+<div class="diagram"><pre class="mermaid">%%{init: {&#x27;theme&#x27;:&#x27;base&#x27;,&#x27;themeVariables&#x27;:{&#x27;fontFamily&#x27;:&#x27;ui-monospace, SFMono-Regular, Menlo, monospace&#x27;,&#x27;fontSize&#x27;:&#x27;12.5px&#x27;,&#x27;primaryColor&#x27;:&#x27;#eef2f6&#x27;,&#x27;primaryBorderColor&#x27;:&#x27;#8ba0b3&#x27;,&#x27;primaryTextColor&#x27;:&#x27;#17222e&#x27;,&#x27;secondaryColor&#x27;:&#x27;#e7edf3&#x27;,&#x27;tertiaryColor&#x27;:&#x27;#f2f5f8&#x27;,&#x27;lineColor&#x27;:&#x27;#7d93a6&#x27;,&#x27;clusterBkg&#x27;:&#x27;#f5f8fb&#x27;,&#x27;clusterBorder&#x27;:&#x27;#c3d0dc&#x27;,&#x27;edgeLabelBackground&#x27;:&#x27;#ffffff&#x27;}}}%%
+flowchart LR
+		Caller[Caller] --&gt; Attempt[Attempt Call]
+		Attempt --&gt;|Success| Done[Return Success]
+		Attempt --&gt;|Retryable Failure| Calc[Compute Exponential Backoff]
+		Calc --&gt; Jitter[Add Random Jitter]
+		Jitter --&gt; Wait[Sleep]
+		Wait --&gt; Check{Max Attempts Reached?}
+		Check --&gt;|No| Attempt
+		Check --&gt;|Yes| Fail[Return Failure / Fallback]</pre></div>
+</article>
+<article class="card t-Complex" data-tier="Complex" data-search="rolling deployment rolling deployment updates a service incrementally by replacing instances or tasks in batches instead of all at once. it keeps the service available while new versions are introduced gradually. replace instances in controlled batches deployment ecs auto scaling">
+<div class="card-head">
+  <div class="card-meta">
+    <span class="num">29</span>
+    <span class="tier">Complex</span>
+    <span class="family">Deployment</span>
+  </div>
+  <h3>Rolling Deployment</h3>
+  <p class="desc">Rolling Deployment updates a service incrementally by replacing instances or tasks in batches instead of all at once. It keeps the service available while new versions are introduced gradually.</p>
+</div>
+<div class="services"><span class="svc">ECS</span><span class="svc">Auto Scaling</span></div>
+<div class="use-row"><span class="k">Use&nbsp;it&nbsp;to</span><span class="v">Replace instances in controlled batches</span></div>
+<div class="diagram"><pre class="mermaid">%%{init: {&#x27;theme&#x27;:&#x27;base&#x27;,&#x27;themeVariables&#x27;:{&#x27;fontFamily&#x27;:&#x27;ui-monospace, SFMono-Regular, Menlo, monospace&#x27;,&#x27;fontSize&#x27;:&#x27;12.5px&#x27;,&#x27;primaryColor&#x27;:&#x27;#eef2f6&#x27;,&#x27;primaryBorderColor&#x27;:&#x27;#8ba0b3&#x27;,&#x27;primaryTextColor&#x27;:&#x27;#17222e&#x27;,&#x27;secondaryColor&#x27;:&#x27;#e7edf3&#x27;,&#x27;tertiaryColor&#x27;:&#x27;#f2f5f8&#x27;,&#x27;lineColor&#x27;:&#x27;#7d93a6&#x27;,&#x27;clusterBkg&#x27;:&#x27;#f5f8fb&#x27;,&#x27;clusterBorder&#x27;:&#x27;#c3d0dc&#x27;,&#x27;edgeLabelBackground&#x27;:&#x27;#ffffff&#x27;}}}%%
+flowchart LR
+    OldA[Old v1 Tasks] --&gt; NewA[New v2 Batch 1]
+    NewA --&gt; NewB[New v2 Batch 2]
+    NewB --&gt; NewC[New v2 Batch 3]</pre></div>
+</article>
+<article class="card t-Complex" data-tier="Complex" data-search="saga with compensation saga with compensation coordinates a multi-step distributed workflow where each successful step has a matching undo action. if a later step fails, compensation runs in reverse order to restore consistency. keep distributed transactions consistent orchestration step functions lambda">
+<div class="card-head">
+  <div class="card-meta">
+    <span class="num">30</span>
+    <span class="tier">Complex</span>
+    <span class="family">Orchestration</span>
+  </div>
+  <h3>Saga with Compensation</h3>
+  <p class="desc">Saga with Compensation coordinates a multi-step distributed workflow where each successful step has a matching undo action. If a later step fails, compensation runs in reverse order to restore consistency.</p>
+</div>
+<div class="services"><span class="svc">Step Functions</span><span class="svc">Lambda</span></div>
+<div class="use-row"><span class="k">Use&nbsp;it&nbsp;to</span><span class="v">Keep distributed transactions consistent</span></div>
+<div class="diagram"><pre class="mermaid">%%{init: {&#x27;theme&#x27;:&#x27;base&#x27;,&#x27;themeVariables&#x27;:{&#x27;fontFamily&#x27;:&#x27;ui-monospace, SFMono-Regular, Menlo, monospace&#x27;,&#x27;fontSize&#x27;:&#x27;12.5px&#x27;,&#x27;primaryColor&#x27;:&#x27;#eef2f6&#x27;,&#x27;primaryBorderColor&#x27;:&#x27;#8ba0b3&#x27;,&#x27;primaryTextColor&#x27;:&#x27;#17222e&#x27;,&#x27;secondaryColor&#x27;:&#x27;#e7edf3&#x27;,&#x27;tertiaryColor&#x27;:&#x27;#f2f5f8&#x27;,&#x27;lineColor&#x27;:&#x27;#7d93a6&#x27;,&#x27;clusterBkg&#x27;:&#x27;#f5f8fb&#x27;,&#x27;clusterBorder&#x27;:&#x27;#c3d0dc&#x27;,&#x27;edgeLabelBackground&#x27;:&#x27;#ffffff&#x27;}}}%%
+flowchart LR
+		Start[Start Saga] --&gt; Reserve[Reserve Inventory]
+		Reserve --&gt; Pay[Capture Payment]
+		Pay --&gt; Ship[Create Shipment]
+		Ship --&gt; End[Success]
+
+		Ship --&gt;|Fail| Refund[Compensate: Refund Payment]
+		Refund --&gt; Release[Compensate: Release Inventory]
+		Release --&gt; Failed[Compensated Failure]</pre></div>
+</article>
+<article class="card t-Complex" data-tier="Complex" data-search="sidecar sidecar deploys a helper component next to the main application runtime so cross-cutting concerns can be added without changing the application code directly. the sidecar shares the same task or pod boundary as the app and handles concerns such as logging, auth proxying, metrics, or service mesh behavior. add cross-cutting capabilities beside the app deployment ecs eks envoy">
+<div class="card-head">
+  <div class="card-meta">
+    <span class="num">31</span>
+    <span class="tier">Complex</span>
+    <span class="family">Deployment</span>
+  </div>
+  <h3>Sidecar</h3>
+  <p class="desc">Sidecar deploys a helper component next to the main application runtime so cross-cutting concerns can be added without changing the application code directly. The sidecar shares the same task or pod boundary as the app and handles concerns such as logging, auth proxying, metrics, or service mesh behavior.</p>
+</div>
+<div class="services"><span class="svc">ECS</span><span class="svc">EKS</span><span class="svc">Envoy</span></div>
+<div class="use-row"><span class="k">Use&nbsp;it&nbsp;to</span><span class="v">Add cross-cutting capabilities beside the app</span></div>
+<div class="diagram"><pre class="mermaid">%%{init: {&#x27;theme&#x27;:&#x27;base&#x27;,&#x27;themeVariables&#x27;:{&#x27;fontFamily&#x27;:&#x27;ui-monospace, SFMono-Regular, Menlo, monospace&#x27;,&#x27;fontSize&#x27;:&#x27;12.5px&#x27;,&#x27;primaryColor&#x27;:&#x27;#eef2f6&#x27;,&#x27;primaryBorderColor&#x27;:&#x27;#8ba0b3&#x27;,&#x27;primaryTextColor&#x27;:&#x27;#17222e&#x27;,&#x27;secondaryColor&#x27;:&#x27;#e7edf3&#x27;,&#x27;tertiaryColor&#x27;:&#x27;#f2f5f8&#x27;,&#x27;lineColor&#x27;:&#x27;#7d93a6&#x27;,&#x27;clusterBkg&#x27;:&#x27;#f5f8fb&#x27;,&#x27;clusterBorder&#x27;:&#x27;#c3d0dc&#x27;,&#x27;edgeLabelBackground&#x27;:&#x27;#ffffff&#x27;}}}%%
+flowchart LR
+		Client[Client]
+		Task[ECS Task / Pod]
+		App[App Container]
+		Sidecar[Sidecar Container]
+		Sink[Logs / Auth / Metrics Sink]
+
+		Client --&gt; Task
+		Task --&gt; App
+		App --&gt; Sidecar
+		Sidecar --&gt; Sink</pre></div>
+</article>
+<article class="card t-Complex" data-tier="Complex" data-search="timeout timeout sets an upper bound on how long a request can wait for a dependency before failing or falling back. it prevents stuck calls from consuming worker capacity and keeps service latency predictable. bound latency and failure blast radius resilience lambda aws sdk step functions">
+<div class="card-head">
+  <div class="card-meta">
+    <span class="num">32</span>
+    <span class="tier">Complex</span>
+    <span class="family">Resilience</span>
+  </div>
+  <h3>Timeout</h3>
+  <p class="desc">Timeout sets an upper bound on how long a request can wait for a dependency before failing or falling back. It prevents stuck calls from consuming worker capacity and keeps service latency predictable.</p>
+</div>
+<div class="services"><span class="svc">Lambda</span><span class="svc">AWS SDK</span><span class="svc">Step Functions</span></div>
+<div class="use-row"><span class="k">Use&nbsp;it&nbsp;to</span><span class="v">Bound latency and failure blast radius</span></div>
+<div class="diagram"><pre class="mermaid">%%{init: {&#x27;theme&#x27;:&#x27;base&#x27;,&#x27;themeVariables&#x27;:{&#x27;fontFamily&#x27;:&#x27;ui-monospace, SFMono-Regular, Menlo, monospace&#x27;,&#x27;fontSize&#x27;:&#x27;12.5px&#x27;,&#x27;primaryColor&#x27;:&#x27;#eef2f6&#x27;,&#x27;primaryBorderColor&#x27;:&#x27;#8ba0b3&#x27;,&#x27;primaryTextColor&#x27;:&#x27;#17222e&#x27;,&#x27;secondaryColor&#x27;:&#x27;#e7edf3&#x27;,&#x27;tertiaryColor&#x27;:&#x27;#f2f5f8&#x27;,&#x27;lineColor&#x27;:&#x27;#7d93a6&#x27;,&#x27;clusterBkg&#x27;:&#x27;#f5f8fb&#x27;,&#x27;clusterBorder&#x27;:&#x27;#c3d0dc&#x27;,&#x27;edgeLabelBackground&#x27;:&#x27;#ffffff&#x27;}}}%%
+sequenceDiagram
+		participant Client
+		participant API as API Gateway
+		participant Service as Lambda Service
+		participant Downstream as Downstream API
+
+		Client-&gt;&gt;API: Request
+		API-&gt;&gt;Service: Invoke
+		Service-&gt;&gt;Downstream: Call with timeout budget
+		alt Returns before deadline
+				Downstream--&gt;&gt;Service: Response
+				Service--&gt;&gt;API: Success
+		else Exceeds deadline
+				Service--&gt;&gt;API: Timeout fallback
+		end
+		API--&gt;&gt;Client: Final response</pre></div>
+</article>
+<article class="card t-Complex" data-tier="Complex" data-search="transactional outbox transactional outbox ensures that business data changes and event publication stay consistent without requiring a distributed transaction across the database and message broker. the application writes the business record and an outbox event in the same local transaction, then a relay process publishes the outbox event separately. guarantee events publish after a db write messaging &amp; events dynamodb streams lambda">
+<div class="card-head">
+  <div class="card-meta">
+    <span class="num">33</span>
+    <span class="tier">Complex</span>
+    <span class="family">Messaging &amp; Events</span>
+  </div>
+  <h3>Transactional Outbox</h3>
+  <p class="desc">Transactional Outbox ensures that business data changes and event publication stay consistent without requiring a distributed transaction across the database and message broker. The application writes the business record and an outbox event in the same local transaction, then a relay process publishes the outbox event separately.</p>
+</div>
+<div class="services"><span class="svc">DynamoDB</span><span class="svc">Streams</span><span class="svc">Lambda</span></div>
+<div class="use-row"><span class="k">Use&nbsp;it&nbsp;to</span><span class="v">Guarantee events publish after a DB write</span></div>
+<div class="diagram"><pre class="mermaid">%%{init: {&#x27;theme&#x27;:&#x27;base&#x27;,&#x27;themeVariables&#x27;:{&#x27;fontFamily&#x27;:&#x27;ui-monospace, SFMono-Regular, Menlo, monospace&#x27;,&#x27;fontSize&#x27;:&#x27;12.5px&#x27;,&#x27;primaryColor&#x27;:&#x27;#eef2f6&#x27;,&#x27;primaryBorderColor&#x27;:&#x27;#8ba0b3&#x27;,&#x27;primaryTextColor&#x27;:&#x27;#17222e&#x27;,&#x27;secondaryColor&#x27;:&#x27;#e7edf3&#x27;,&#x27;tertiaryColor&#x27;:&#x27;#f2f5f8&#x27;,&#x27;lineColor&#x27;:&#x27;#7d93a6&#x27;,&#x27;clusterBkg&#x27;:&#x27;#f5f8fb&#x27;,&#x27;clusterBorder&#x27;:&#x27;#c3d0dc&#x27;,&#x27;edgeLabelBackground&#x27;:&#x27;#ffffff&#x27;}}}%%
+flowchart LR
+		App[Service Write]
+		Orders[(Orders Store)]
+		Outbox[(Outbox Store)]
+		Relay[Outbox Relay]
+		Queue[SQS or SNS]
+
+		App --&gt; Orders
+		App --&gt; Outbox
+		Outbox --&gt; Relay
+		Relay --&gt; Queue</pre></div>
+</article>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Built from the <b>aws-design-patterns</b> repository &middot; each card mirrors a pattern README.</span>
+    <span>Tiers reflect implementation complexity &middot; diagrams rendered with Mermaid.</span>
+  </div>
+</footer>
+
+<script>
+  const grid=document.getElementById('grid');
+  const cards=[...grid.querySelectorAll('.card')];
+  const shown=document.getElementById('shown');
+  let tier='all', query='';
+  function apply(){
+    let n=0;
+    cards.forEach(c=>{
+      const okT = tier==='all' || c.dataset.tier===tier;
+      const okQ = !query || c.dataset.search.includes(query);
+      const vis = okT && okQ;
+      c.style.display = vis?'':'none';
+      if(vis) n++;
+    });
+    shown.textContent=n;
+    let e=grid.querySelector('.empty');
+    if(n===0){
+      if(!e){e=document.createElement('div');e.className='empty';e.textContent='No patterns match — try a different service or term.';grid.appendChild(e);}
+    } else if(e){ e.remove(); }
+  }
+  document.getElementById('tierChips').addEventListener('click',e=>{
+    const chip=e.target.closest('.chip'); if(!chip)return;
+    document.querySelectorAll('#tierChips .chip').forEach(c=>c.classList.remove('on'));
+    chip.classList.add('on'); tier=chip.dataset.k; apply();
+  });
+  document.getElementById('q').addEventListener('input',e=>{query=e.target.value.trim().toLowerCase();apply();});
+
+  const root=document.documentElement;
+  document.getElementById('themeBtn').addEventListener('click',()=>{
+    const cur=root.getAttribute('data-theme')
+      || (matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');
+    root.setAttribute('data-theme', cur==='dark'?'light':'dark');
+  });
+</script>
